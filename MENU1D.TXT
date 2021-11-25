@@ -1,0 +1,39 @@
+      *---------------------------------------------------------------*
+      *
+      *  MENU1D - Project Report Selection
+      *
+      *---------------------------------------------------------------*
+     A                                      PRINT
+      *-------------------------------------------------------------------------
+     A          R FMT01
+     A                                      CA03(03 'Exit Program')
+     A                                      CA12(12 'Cancel')
+     A                                      BLINK
+     A                                  1  3DATE EDTCDE(Y)
+     A                                  1 12TIME EDTWRD('  :  :  ')
+     A                                  1 30'Project Reports'
+     A                                      DSPATR(HI)
+     A                                  1 60'MENU1'
+     A                                  5 15'1.  Programmer Month-End Summary S-
+     A                                      heets'
+     A                                  6 15'2.  Project Month-End Report'
+     A                                  7 15'3.  Project Counts Report'
+     A                                  8 15'4.  Project Status Sheet'
+     A                                 10 15'Report Option:'
+     A                                      DSPATR(HI)
+     A            OPTION         2Y 0B 10 30EDTCDE(4)
+     A                                      RANGE(1 4)
+     A                                      DSPATR(MDT)
+     A                                 10 37'For Month/Year:'
+     A                                      DSPATR(HI)
+     A            MONTH          2Y 0B 10 53EDTCDE(4)
+     A  70                                  ERRMSG('Invalid date' 70)
+     A            YEAR           4Y 0B 10 56EDTCDE(4)
+     A  70                                  ERRMSG('Invalid date' 70)
+     A                                 12 15'Number of Copies:'
+     A                                      DSPATR(HI)
+     A            COPIES         3Y 0B 12 33EDTCDE(4)
+     A                                 23  4'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 56'F12=Cancel'
+     A                                      COLOR(BLU)

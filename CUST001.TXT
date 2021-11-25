@@ -1,0 +1,126 @@
+      *------------------------------------------------------------------*
+      * CUST001  - Customer Master Maintenance/Inquiry                   *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    03  -  End of Program.                                        *
+      *    05  -  View Customer Record                                   *
+      *    06  -  Add new customer                                       *
+      *    07  -  Change existing customer                               *
+      *    08  -  Delete customer record                                 *
+      *    12  -  Cancel request                                         *
+      *    41  -  Inquiry/Maintenance Mode Switch                        *
+      *                                                                  *
+      *    70  -  Must press function key                                *
+      *    71  -  Customer number not found                              *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FCUST001DCF  E                    WORKSTN
+     FCUSTMASTUF  E           K        DISK                      A
+     I              '**INQUIRY**'         C         INQOPR
+     I              '***ADD***'           C         ADDOPR
+     I              '***CHANGE***'        C         CHGOPR
+     I              '***DELETE***'        C         DLTOPR
+     C/EJECT
+      *
+      *   Mainline
+      *
+     C           *IN03     DOUEQ*ON                        Stay until exit
+     C           *IN12     OREQ *ON                        or cancel
+      *
+     C                     EXFMTSELECT
+      *
+     C           *IN03     IFEQ *OFF                       No exit or
+     C           *IN12     ANDEQ*OFF                        Cancel
+      *
+     C                     SELEC
+     C           *IN05     WHEQ *ON                        View customer
+     C                     MOVELINQOPR    OPER      P
+     C                     EXSR @#VLD1
+      *
+     C           *IN06     WHEQ *ON                        Add new cust
+     C                     MOVELADDOPR    OPER      P
+     C                     CLEARCUSTFMT
+      *
+     C           *IN07     WHEQ *ON                        Change customer
+     C                     MOVELCHGOPR    OPER      P
+     C                     EXSR @#VLD1
+      *
+     C           *IN08     WHEQ *ON                        Delete customer
+     C                     MOVELDLTOPR    OPER      P
+     C                     EXSR @#VLD1
+      *
+     C                     OTHER
+     C                     MOVE *ON       *IN70
+      *
+     C                     ENDSL
+      *
+      *   Process customer screen if no errors
+     C           *IN70     IFEQ *OFF
+     C           *IN71     ANDEQ*OFF
+     C                     EXSR @#CUST
+     C                     Z-ADD0         CUSNBR           Clear input fld
+     C                     MOVE *OFF      *IN12            Clear "cancel"
+     C                     ENDIF
+      *
+     C                     ENDIF                           End exit test
+      *
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+     C/EJECT
+      *
+      *  Initialization subroutine
+      *
+     C           *INZSR    BEGSR
+      *
+     C           *ENTRY    PLIST
+     C                     PARM           MODE    1
+      *
+     C           MODE      IFEQ 'I'
+     C                     MOVE *ON       *IN41            Inquiry mode
+     C                     ENDIF
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Validate customer number
+      *
+     C           @#VLD1    BEGSR
+      *
+     C           CUSNBR    CHAINCUSTMAST            N71    Get record
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Show customer data
+      *
+     C           @#CUST    BEGSR
+      *
+     C           OPER      IFNE INQOPR                     Not inquiry
+     C           OPER      ANDNEADDOPR                     & not add
+     C           CUSNBR    CHAINCUSTMAST             71    Get record for
+     C                     ENDIF                             update
+      *
+     C                     EXFMTDETAIL
+      *
+     C           *IN03     IFEQ *OFF
+     C           *IN12     ANDEQ*OFF
+      *
+     C                     SELEC
+     C           OPER      WHEQ ADDOPR                     Add new record
+     C                     Z-ADDCUSNBR    CUST#            Load key
+     C                     WRITECUSTFMT
+      *
+     C           OPER      WHEQ CHGOPR                     Change customer
+     C                     UPDATCUSTFMT
+      *
+     C           OPER      WHEQ DLTOPR                     Delete customer
+     C                     DELETCUSTFMT
+      *
+     C                     ENDSL
+      *
+     C                     ENDIF                           End exit test
+      *
+     C                     ENDSR

@@ -1,0 +1,114 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      PRINT
+     A                                      CA03(03 'End')
+     A                                      CF10(10 'Switch character/numeric')
+      *-------------------------------------------------------------------------
+     A          R FMT1
+     A                                  1 21'Keyboard Shift Entry Test-Characte-
+     A                                      r Data'
+     A                                      DSPATR(HI)
+     A                                  4  2'Data Type Code'
+     A                                      DSPATR(UL)
+     A                                  4 24'Field Type'
+     A                                      DSPATR(UL)
+     A                                  4 38'Input'
+     A                                      DSPATR(UL)
+     A                                  4 51'Output'
+     A                                      DSPATR(UL)
+     A                                  4 64'Both'
+     A                                      DSPATR(UL)
+     A                                  6  2'X (Alphabetic only)'
+     A                                  6 24'Character'
+     A            XCHRI          5X  I  6 38
+     A            XCHRO          5X  O  6 51
+     A            XCHRB          5X  B  6 64
+     A                                  8  2'A (Alphanumeric)'
+     A                                  8 24'Character'
+     A            ACHRI          5A  I  8 38
+     A            ACHRO          5A  O  8 51
+     A            ACHRB          5A  B  8 64
+     A                                 10  2'N (Numeric shift)'
+     A                                 10 24'Character'
+     A            NCHRI          5N  I 10 38
+     A            NCHRO          5N  O 10 51
+     A            NCHRB          5N  B 10 64
+     A                                 12  2'I (Inhibit Keyboard)'
+     A                                 12 24'Character'
+     A            ICHRI          5I  I 12 38
+     A            ICHRO          5I  O 12 51
+     A            ICHRB          5I  B 12 64
+     A                                 14  2'D (Digits only)'
+     A                                 14 24'Character'
+     A            DCHRI          5D  I 14 38
+     A            DCHRO          5D  O 14 51
+     A            DCHRB          5D  B 14 64
+     A                                 16  2'M (Numeric only chr)'
+     A                                 16 24'Character'
+     A            MCHRI          5M  I 16 38
+     A            MCHRO          5M  O 16 51
+     A            MCHRB          5M  B 16 64
+     A                                 24  4'F3=Exit'
+     A                                      DSPATR(HI)
+     A                                 24 41'F10=Switch to Numeric'
+     A                                      DSPATR(HI)
+      *-------------------------------------------------------------------------
+     A          R FMT2
+     A                                  1 21'Keyboard Shift Entry Test-Numeric -
+     A                                      Data'
+     A                                      DSPATR(HI)
+     A                                  4  2'Data Type Code'
+     A                                      DSPATR(UL)
+     A                                  4 24'Field Type'
+     A                                      DSPATR(UL)
+     A                                  4 38'Input'
+     A                                      DSPATR(UL)
+     A                                  4 51'Output'
+     A                                      DSPATR(UL)
+     A                                  4 64'Both'
+     A                                      DSPATR(UL)
+     A                                  6  2'N (Numeric shift)'
+     A                                  6 24'Numeric'
+     A            NNUMI          5N 1I  6 38
+     A            NNUMO          5N 1O  6 51
+     A            NNUMB          5N 1B  6 64
+     A                                  8  2'S (Signed shift)'
+     A                                  8 24'Numeric'
+     A            SNUMI          5S 1I  8 38
+     A            SNUMO          5S 1O  8 51
+     A            SNUMB          5S 1B  8 64
+     A                                 10  2'Y (Numeric only)'
+     A                                 10 24'Numeric'
+     A            YNUMI          5Y 1I 10 38
+     A            YNUMO          5Y 1O 10 51
+     A            YNUMB          5Y 1B 10 64
+     A                                 11 24'EDTCDE(4)'
+     A            YNE4I          5Y 1I 11 38
+     A            YNE4O          5Y 1O 11 51EDTCDE(4)
+     A            YNE4B          5Y 1B 11 64EDTCDE(4)
+     A                                 13  2'I (Inhibit Keyboard)'
+     A                                 13 24'Numeric'
+     A            INUMI          5I 1I 13 38
+     A            INUMO          5I 1O 13 51
+     A            INUMB          5I 1B 13 64
+     A                                 15  2'D (Digits only)'
+     A                                 15 24'Numeric'
+     A            DNUMI          5D 0I 15 38
+     A            DNUMO          5D 0O 15 51
+     A            DNUMB          5D 0B 15 64
+     A                                 17  2'F (Floating point)'
+     A                                 17 23'Numeric'
+     A            FNUMI          7F 1I 17 34FLTPCN(*SINGLE)
+     A            FNUMO          7F 1O 17 49FLTPCN(*SINGLE)
+     A            FNUMB          7F 1B 17 64FLTPCN(*SINGLE)
+     A                                 18 23'FLTFIXDEC'
+     A            FNF4I          7F 1I 18 34
+     A            FNF4O          7F 1O 18 49FLTFIXDEC
+     A            FNF4B          7F 1B 18 64FLTFIXDEC
+     A                                 19 18'FLTPCN(*DOUBLE)'
+     A            FNPDI          7F 1I 19 34FLTPCN(*DOUBLE)
+     A            FNPDO          7F 1O 19 49FLTPCN(*DOUBLE)
+     A            FNPDB          7F 1B 19 64FLTPCN(*DOUBLE)
+     A                                 24  4'F3=Exit'
+     A                                      DSPATR(HI)
+     A                                 24 41'F10=Switch to Character'
+     A                                      DSPATR(HI)

@@ -1,0 +1,131 @@
+      *------------------------------------------------------------------*
+      * MENU001  - Menu Program                                          *
+      *------------------------------------------------------------------*
+     FMENU001DCF  E                    WORKSTN      KINFDS DSPINF
+     IDSPINF      DS
+     I                                      369 369 @@AID
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     C/EJECT
+     C                     MOVE NO        EXIT    1
+      *
+      *   Mainline
+      *
+     C           EXIT      DOUEQYES                        Stay until exit
+      *
+     C                     EXFMTMENUBAR
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C*
+     C           MNUCHC    WHEQ 1                          Maintenance
+     C           PULINP    CASEQ1         @@M1O1           Cust Pgm #1
+     C           PULINP    CASEQ2         @@M1O2           Cust Pgm #2
+     C           PULINP    CASEQ3         @@M1O3           Data Entry
+     C                     ENDCS
+     C*
+     C           MNUCHC    WHEQ 2                          Inquiry
+     C           PULINP    CASEQ1         @@M2O1           Cust Pgm #1
+     C           PULINP    CASEQ2         @@M2O2           Cust Pgm #2
+     C           PULINP    CASEQ3         @@M2O3           Hist Pgm #1
+     C           PULINP    CASEQ4         @@M2O4           Hist Pgm #2
+     C                     ENDCS
+     C*
+     C           MNUCHC    WHEQ 3                          Search
+     C           PULINP    CASEQ1         @@M3O1           Cust Pgm #3
+     C           PULINP    CASEQ2         @@M3O2           Cust Pgm #4
+     C                     ENDCS
+     C*
+     C           MNUCHC    WHEQ 4                          Special
+     C           PULINP    CASEQ1         @@M4O1           Backup Pgm #1
+     C           PULINP    CASEQ2         @@M4O2           Backup Pgm #2
+     C           PULINP    CASEQ3         @@M4O3           Special Effects
+     C           PULINP    CASEQ4         @@M4O4           Color Pgm #1
+     C           PULINP    CASEQ6         @@M4O5           Entry Test Pgm
+     C                     ENDCS
+     C*
+     C                     ENDSL
+      *
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      *
+      *   Customer Maintenance Program #1
+     C           @@M1O1    BEGSR
+     C                     CALL 'CUST001'
+     C                     PARM 'M'       MODE    1
+     C                     ENDSR
+      *
+      *   Customer Maintenance Program #2
+     C           @@M1O2    BEGSR
+     C                     CALL 'CUST002'
+     C                     PARM 'M'       MODE    1
+     C                     ENDSR
+      *
+      *   Data Entry Example Program
+     C           @@M1O3    BEGSR
+     C                     CALL 'DATA001'
+     C                     ENDSR
+      *
+      *   Customer Inquiry Program #1
+     C           @@M2O1    BEGSR
+     C                     CALL 'CUST001'
+     C                     PARM 'I'       MODE    1
+     C                     ENDSR
+      *
+      *   Customer Inquiry Program #2
+     C           @@M2O2    BEGSR
+     C                     CALL 'CUST002'
+     C                     PARM 'M'       MODE    1
+     C                     ENDSR
+      *
+      *   Sales Inquiry Program #1
+     C           @@M2O3    BEGSR
+     C                     CALL 'HIST001'
+     C                     ENDSR
+      *
+      *   Sales Inquiry Program #2
+     C           @@M2O4    BEGSR
+     C                     CALL 'HIST002'
+     C                     ENDSR
+      *
+      *   Customer Search Program #1
+     C           @@M3O1    BEGSR
+     C                     CALL 'CUST003'
+     C                     ENDSR
+      *
+      *   Customer Search Program #4
+     C           @@M3O2    BEGSR
+     C                     CALL 'CUST004'
+     C                     ENDSR
+      *
+      *   Backup CL Program #1
+     C           @@M4O1    BEGSR
+     C                     CALL 'BACKUP'
+     C                     ENDSR
+      *
+      *   Backup CL Program #2
+     C           @@M4O2    BEGSR
+     C                     CALL 'BACKUP2'
+     C                     ENDSR
+      *
+      *   Special Effects Program
+     C           @@M4O3    BEGSR
+     C                     CALL 'CHAR001'
+     C                     ENDSR
+      *
+      *   Test Colors Program #1
+     C           @@M4O4    BEGSR
+     C                     CALL 'TCOLOR'
+     C                     ENDSR
+      *
+      *   Entry Type Test Program
+     C           @@M4O5    BEGSR
+     C                     CALL 'TENTRY'
+     C                     ENDSR

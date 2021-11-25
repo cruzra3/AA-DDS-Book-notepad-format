@@ -1,0 +1,5 @@
+     A          R HISTFMT                   PFILE(ORDERHST)
+     A          K CUST#
+     A          K DATE                      DESCEND
+     A          K SALEO#
+     A          K INV#

@@ -1,0 +1,551 @@
+      *
+      *  NOTE:  Be sure to create the data queue used by this program.
+      *         Use the following command:
+      *            CRTDTAQ DTQ(DTAQB) MAXLEN(80) SEQ(*KEYED) KEYLEN(10) +
+      *               TEXT('Batch Communications Data Queue')
+      *
+      *         Also, note the use of MULTIJOBQ in the command line at
+      *         the end of this program.  Change this to a job queue
+      *         on your system that allows multiple job threading.
+      *
+      *
+      *------------------------------------------------------------------*
+      * MONITOR  - Monitor & Control 4 background jobs                   *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    41  -  Job 1 is not active                                    *
+      *    42  -  Job 2 is not active                                    *
+      *    43  -  Job 3 is not active                                    *
+      *    44  -  Job 4 is not active                                    *
+      *    45  -  No jobs available for request                          *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FMONITORDCF  E                    WORKSTN      KINFDS DSPINF
+     E                    CMD     1   1 80               Submit string
+     E                    J1S         4 10               Job 1 Status Hist
+     E                    J1T         4  6 0             Job 1 Time Hist
+     E                    J2S         4 10               Job 2 Status Hist
+     E                    J2T         4  6 0             Job 2 Time Hist
+     E                    J3S         4 10               Job 3 Status Hist
+     E                    J3T         4  6 0             Job 3 Time Hist
+     E                    J4S         4 10               Job 4 Status Hist
+     E                    J4T         4  6 0             Job 4 Time Hist
+     E                    HLDT        3  6 0             Hold times
+     IDSPINF      DS
+     I                                      369 369 ##AID
+      *
+     I            DS
+     I                                        1  80 CMD
+     I                                       38  38 BTCHID
+      *
+     IINDATA      DS                             80
+     I                                        1  10 JOBID
+     I                                       11  20 STATUS
+      *
+     IOUTDTA      DS                             80
+     I                                        1  10 RQS
+      *
+     I            DS
+     I                                        1  40 J1S
+     I                                        1  10 STSJ14
+     I                                       11  20 STSJ13
+     I                                       21  30 STSJ12
+     I                                       31  40 STSJ11
+     I           IDS
+     I                                        1  240J1T
+     I                                        1   60TIMJ14
+     I                                        7  120TIMJ13
+     I                                       13  180TIMJ12
+     I                                       19  240TIMJ11
+     I            DS
+     I                                        1  40 J2S
+     I                                        1  10 STSJ24
+     I                                       11  20 STSJ23
+     I                                       21  30 STSJ22
+     I                                       31  40 STSJ21
+     I           IDS
+     I                                        1  240J2T
+     I                                        1   60TIMJ24
+     I                                        7  120TIMJ23
+     I                                       13  180TIMJ22
+     I                                       19  240TIMJ21
+     I            DS
+     I                                        1  40 J3S
+     I                                        1  10 STSJ34
+     I                                       11  20 STSJ33
+     I                                       21  30 STSJ32
+     I                                       31  40 STSJ31
+     I           IDS
+     I                                        1  240J3T
+     I                                        1   60TIMJ34
+     I                                        7  120TIMJ33
+     I                                       13  180TIMJ32
+     I                                       19  240TIMJ31
+     I            DS
+     I                                        1  40 J4S
+     I                                        1  10 STSJ44
+     I                                       11  20 STSJ43
+     I                                       21  30 STSJ42
+     I                                       31  40 STSJ41
+     I           IDS
+     I                                        1  240J4T
+     I                                        1   60TIMJ44
+     I                                        7  120TIMJ43
+     I                                       13  180TIMJ42
+     I                                       19  240TIMJ41
+      *
+     I              'END'                 C         END
+     I              'ON HOLD'             C         HOLD
+     I              'RELEASED'            C         RLS
+     I              'ACTIVE'              C         ACTIVE
+     I              'WAITING'             C         WAIT
+     I              'STARTING'            C         START
+     I              'INACTIVE'            C         INACT
+      *
+     I              'Start'               C         TASK#1
+     I              'End'                 C         TASK#2
+     I              'Hold'                C         TASK#3
+     I              'Release'             C         TASK#4
+      *
+     I              X'33'                 C         ##F3
+     I              X'35'                 C         ##F5
+     I              X'3A'                 C         ##F10
+     I              X'3B'                 C         ##F11
+     I              X'3C'                 C         ##F12
+     I              X'B6'                 C         ##F18
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+      *
+      *   Stay in program until Exit is requested
+      *
+     C           EXIT      DOUEQYES
+      *
+     C                     WRITEFMT1
+     C                     CALL 'QRCVDTAQ'
+     C                     PARM           INQUE
+     C                     PARM           QUELIB
+     C                     PARM           INLEN
+     C                     PARM           INDATA
+     C                     PARM           WAITTM
+      *
+     C           JOBID     CASEQ'*DSPF'   @@INTA           Interactive Rqs
+     C           JOBID     CASEQ'BATCH1'  @@BCH1           Job 1 Status
+     C           JOBID     CASEQ'BATCH2'  @@BCH2           Job 2 Status
+     C           JOBID     CASEQ'BATCH3'  @@BCH3           Job 3 Status
+     C           JOBID     CASEQ'BATCH4'  @@BCH4           Job 4 Status
+     C                     ENDCS
+      *
+     C                     ENDDO
+      *
+      *  Upon exiting program, shutdown background jobs
+      *
+     C           STAT1     IFNE INACT                      Job 1 active
+     C                     MOVELEND       RQS       P
+     C                     Z-ADD1         JOBSEL
+     C                     EXSR @@SEND
+     C                     ENDIF
+      *
+     C           STAT2     IFNE INACT                      Job 2 active
+     C                     MOVELEND       RQS       P
+     C                     Z-ADD2         JOBSEL
+     C                     EXSR @@SEND
+     C                     ENDIF
+      *
+     C           STAT3     IFNE INACT                      Job 3 active
+     C                     MOVELEND       RQS       P
+     C                     Z-ADD3         JOBSEL
+     C                     EXSR @@SEND
+     C                     ENDIF
+      *
+     C           STAT4     IFNE INACT                      Job 4 active
+     C                     MOVELEND       RQS       P
+     C                     Z-ADD4         JOBSEL
+     C                     EXSR @@SEND
+     C                     ENDIF
+      *
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      /EJECT
+      *
+      *  Program Initialization
+      *
+     C           *INZSR    BEGSR
+      *
+      *  Initialize Program variables
+      *
+     C                     MOVE NO        EXIT    1        Exit flag
+     C                     MOVE *BLANKS   WRK001  1        Work field
+      *
+     C                     MOVEL'DTAQI'   INQUE  10 P      Input queue
+     C                     MOVEL'DTAQB'   OUTQUE 10 P      Output queue
+     C                     MOVEL'*LIBL'   QUELIB 10 P      Queue library
+     C                     Z-ADD0         INLEN   50       Length of data
+     C                     Z-ADD80        DTALEN  50       Length of data
+     C                     Z-ADD0         WAITTM  50       Wait time
+     C                     Z-ADD80        CMDLEN 155       Cmd Length
+     C                     Z-ADD10        KEYLEN  30       Length of key
+     C                     MOVEL'BATCH'   KEYDTA 10        Key data
+      *
+      *  Retreive background statuses from data queue (empty the queue)
+      *
+     C                     MOVELINACT     STAT1            Not Active
+     C                     MOVELINACT     STAT2            Not Active
+     C                     MOVELINACT     STAT3            Not Active
+     C                     MOVELINACT     STAT4            Not Active
+      *
+     C           INLEN     DOUEQ0
+     C                     CALL 'QRCVDTAQ'
+     C                     PARM           INQUE
+     C                     PARM           QUELIB
+     C                     PARM           INLEN
+     C                     PARM           INDATA
+     C                     PARM           WAITTM
+      *
+     C           INLEN     IFNE 0                          Have data
+     C                     SELEC
+     C           JOBID     WHEQ 'BATCH1'                   Job 1 Status
+     C                     MOVE STATUS    STAT1
+     C           JOBID     WHEQ 'BATCH2'                   Job 2 Status
+     C                     MOVE STATUS    STAT2
+     C           JOBID     WHEQ 'BATCH3'                   Job 3 Status
+     C                     MOVE STATUS    STAT3
+     C           JOBID     WHEQ 'BATCH4'                   Job 4 Status
+     C                     MOVE STATUS    STAT4
+     C                     ENDSL
+     C                     ENDIF
+      *
+     C                     ENDDO
+      *
+      *  Put up monitoring grid
+      *
+     C                     WRITEGRID
+     C                     WRITEJOB1
+     C                     WRITEJOB2
+     C                     WRITEJOB3
+     C                     WRITEJOB4
+      *
+     C                     Z-ADD-1        WAITTM           Reset wait time
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Interactive Request
+      *
+     C           @@INTA    BEGSR
+      *
+      *  Process request
+      *
+     C                     READ FMT1                     90
+     C                     SELEC
+     C           ##AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           ##AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C           ##AID     WHEQ ##F5                       Start
+     C                     EXSR @@STRT
+     C           ##AID     WHEQ ##F10                      Release
+     C                     EXSR @@RLS
+     C           ##AID     WHEQ ##F11                      Hold
+     C                     EXSR @@HOLD
+     C           ##AID     WHEQ ##F18                      End Job
+     C                     EXSR @@END
+     C                     ENDSL
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Set background job #1 status & history
+      *
+     C           @@BCH1    BEGSR
+      *
+      *  Send data
+      *
+     C                     MOVE STATUS    STAT1
+     C                     TIME           TIME    60
+      *
+     C                     MOVEAJ1S,2     HLDSTS 40        Shift data
+     C                     MOVEAJ1T,2     HLDT,1
+     C                     MOVEAHLDSTS    J1S,1
+     C                     MOVEAHLDT,1    J1T,1
+      *
+     C                     MOVE STATUS    J1S,4
+     C                     MOVE TIME      J1T,4
+      *
+     C                     WRITEJOB1
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Set background job #2 status & history
+      *
+     C           @@BCH2    BEGSR
+      *
+      *  Send data
+      *
+     C                     MOVE STATUS    STAT2
+     C                     TIME           TIME
+      *
+     C                     MOVEAJ2S,2     HLDSTS           Shift data
+     C                     MOVEAJ2T,2     HLDT,1
+     C                     MOVEAHLDSTS    J2S,1
+     C                     MOVEAHLDT,1    J2T,1
+      *
+     C                     MOVE STATUS    J2S,4
+     C                     MOVE TIME      J2T,4
+      *
+     C                     WRITEJOB2
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Set background job #3 status & history
+      *
+     C           @@BCH3    BEGSR
+      *
+      *  Send data
+      *
+     C                     MOVE STATUS    STAT3
+     C                     TIME           TIME
+      *
+     C                     MOVEAJ3S,2     HLDSTS           Shift data
+     C                     MOVEAJ3T,2     HLDT,1
+     C                     MOVEAHLDSTS    J3S,1
+     C                     MOVEAHLDT,1    J3T,1
+      *
+     C                     MOVE STATUS    J3S,4
+     C                     MOVE TIME      J3T,4
+      *
+     C                     WRITEJOB3
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Set background job #4 status & history
+      *
+     C           @@BCH4    BEGSR
+      *
+      *  Send data
+      *
+     C                     MOVE STATUS    STAT4
+     C                     TIME           TIME
+      *
+     C                     MOVEAJ4S,2     HLDSTS           Shift data
+     C                     MOVEAJ4T,2     HLDT,1
+     C                     MOVEAHLDSTS    J4S,1
+     C                     MOVEAHLDT,1    J4T,1
+      *
+     C                     MOVE STATUS    J4S,4
+     C                     MOVE TIME      J4T,4
+      *
+     C                     WRITEJOB4
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Start background job (only inactive allowed)
+      *
+     C           @@STRT    BEGSR
+      *
+     C                     MOVE *ON       *IN41            Assume unavail
+     C                     MOVE *ON       *IN42
+     C                     MOVE *ON       *IN43
+     C                     MOVE *ON       *IN44
+     C                     MOVE *ON       *IN45
+      *
+     C           STAT1     IFEQ INACT
+     C                     MOVE *OFF      *IN41
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT2     IFEQ INACT
+     C                     MOVE *OFF      *IN42
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT3     IFEQ INACT
+     C                     MOVE *OFF      *IN43
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT4     IFEQ INACT
+     C                     MOVE *OFF      *IN44
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+      *
+     C                     MOVELTASK#1    TASK      P
+     C                     Z-ADD0         JOBSEL
+     C                     EXFMTFMT2
+      *
+     C                     SELEC
+     C           ##AID     WHEQ ##F3
+     C                     MOVE YES       EXIT
+     C           ##AID     WHNE ##F12
+     C           JOBSEL    IFNE 0                          Select job
+     C                     MOVE JOBSEL    BTCHID
+     C                     CALL 'QCMDEXC'
+     C                     PARM           CMD
+     C                     PARM           CMDLEN
+     C                     ENDIF
+      *
+     C                     ENDSL
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  End background job (only non-inactive allowed)
+      *
+     C           @@END     BEGSR
+      *
+     C                     MOVE *ON       *IN41            Assume unavail
+     C                     MOVE *ON       *IN42
+     C                     MOVE *ON       *IN43
+     C                     MOVE *ON       *IN44
+     C                     MOVE *ON       *IN45
+      *
+     C           STAT1     IFNE INACT
+     C                     MOVE *OFF      *IN41
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT2     IFNE INACT
+     C                     MOVE *OFF      *IN42
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT3     IFNE INACT
+     C                     MOVE *OFF      *IN43
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT4     IFNE INACT
+     C                     MOVE *OFF      *IN44
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+      *
+     C                     MOVELTASK#2    TASK      P
+     C                     Z-ADD0         JOBSEL
+     C                     EXFMTFMT2
+      *
+     C                     SELEC
+     C           ##AID     WHEQ ##F3
+     C                     MOVE YES       EXIT
+     C           ##AID     WHNE ##F12
+     C           JOBSEL    ANDNE0
+     C                     MOVELEND       RQS       P
+     C                     EXSR @@SEND
+      *
+     C                     ENDSL
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Hold background job (only Non-inactive & not held allowed)
+      *
+     C           @@HOLD    BEGSR
+      *
+     C                     MOVE *ON       *IN41            Assume unavail
+     C                     MOVE *ON       *IN42
+     C                     MOVE *ON       *IN43
+     C                     MOVE *ON       *IN44
+     C                     MOVE *ON       *IN45
+      *
+     C           STAT1     IFNE HOLD
+     C           STAT1     ANDNEINACT
+     C                     MOVE *OFF      *IN41
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT2     IFNE HOLD
+     C           STAT2     ANDNEINACT
+     C                     MOVE *OFF      *IN42
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT3     IFNE HOLD
+     C           STAT3     ANDNEINACT
+     C                     MOVE *OFF      *IN43
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT4     IFNE HOLD
+     C           STAT4     ANDNEINACT
+     C                     MOVE *OFF      *IN44
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+      *
+     C                     MOVELTASK#3    TASK      P
+     C                     Z-ADD0         JOBSEL
+     C                     EXFMTFMT2
+      *
+     C                     SELEC
+     C           ##AID     WHEQ ##F3
+     C                     MOVE YES       EXIT
+     C           ##AID     WHNE ##F12
+     C           JOBSEL    ANDNE0
+     C                     MOVELHOLD      RQS       P
+     C                     EXSR @@SEND
+      *
+     C                     ENDSL
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Release background job (only hold allowed)
+      *
+     C           @@RLS     BEGSR
+      *
+     C                     MOVE *ON       *IN41            Assume unavail
+     C                     MOVE *ON       *IN42
+     C                     MOVE *ON       *IN43
+     C                     MOVE *ON       *IN44
+     C                     MOVE *ON       *IN45
+      *
+     C           STAT1     IFEQ HOLD
+     C                     MOVE *OFF      *IN41
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT2     IFEQ HOLD
+     C                     MOVE *OFF      *IN42
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT3     IFEQ HOLD
+     C                     MOVE *OFF      *IN43
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+     C           STAT4     IFEQ HOLD
+     C                     MOVE *OFF      *IN44
+     C                     MOVE *OFF      *IN45
+     C                     ENDIF
+      *
+     C                     MOVELTASK#4    TASK      P
+     C                     Z-ADD0         JOBSEL
+     C                     EXFMTFMT2
+      *
+     C                     SELEC
+     C           ##AID     WHEQ ##F3
+     C                     MOVE YES       EXIT
+     C           ##AID     WHNE ##F12
+     C           JOBSEL    ANDNE0
+     C                     MOVELRLS       RQS       P
+     C                     EXSR @@SEND
+      *
+     C                     ENDSL
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Send request to background job
+      *
+     C           @@SEND    BEGSR
+      *
+      *  Build Key Data
+      *
+     C                     MOVE JOBSEL    WRK001
+     C           'BATCH'   CAT  WRK001    KEYDTA    P
+      *
+      *  Send request
+      *
+     C                     CALL 'QSNDDTAQ'
+     C                     PARM           OUTQUE
+     C                     PARM           QUELIB
+     C                     PARM           DTALEN
+     C                     PARM           OUTDTA
+     C                     PARM           KEYLEN
+     C                     PARM           KEYDTA
+      *
+     C                     ENDSR
+** CMD **  Command string for starting background job
+SBMJOB  CMD(CALL  DTAQB01 PARM('BATCHx'))  JOBQ(MULTIJOBQ)

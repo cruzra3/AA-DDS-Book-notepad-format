@@ -1,0 +1,336 @@
+      *
+      *  NOTE:  Must create data queue prior to creating display file.
+      *         Use the following command:
+      *               CRTDTAQ(DTAQI) MAXLEN(80) +
+      *                 TEXT('Data Queue for Display File Communications')
+      *
+      *         Create display file using DFRWTR(*NO) and DTAQ(DTAQI)
+      *
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      HELP
+     A                                      HLPRCD(HLPFMT1)
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+     A                                      INVITE
+      *-------------------------------------------------------------------------
+     A          R FMT1                      OVERLAY
+     A                                      KEEP
+     A                                      BLINK
+     A                                      CF05
+     A                                      CF10
+     A                                      CF11
+     A                                      CF18
+     A            INPUT          1A  I 23  2CHGINPDFT
+     A                                      ALIAS(DUMMY_INPUT_FIELD)
+     A                                      DSPATR(ND)
+     A                                 24  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 24 11'F5=Start Job'
+     A                                      COLOR(BLU)
+     A                                 24 25'F10=Release'
+     A                                      COLOR(BLU)
+     A                                 24 38'F11=Hold'
+     A                                      COLOR(BLU)
+     A                                 24 48'F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 24 60'F18=End Job'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R FMT2                      WINDOW(7 30 7 30)
+     A                                      RMVWDW
+     A                                      WDWBORDER((*DSPATR RI)  +
+     A                                      (*CHAR '        '))
+     A                                      BLINK
+     A                                  1  3'Select Job to'
+     A            TASK          10   O  1 17
+     A                                      ALIAS(REQUESTED_TASK)
+     A N45        JOBSEL         2Y 0B  3  3SNGCHCFLD
+     A                                      ALIAS(JOB_NUMBER)
+     A                                      CHECK(ER)
+     A N41                                  CHOICE(1 'Background Job #1')
+     A N42                                  CHOICE(2 'Background Job #2')
+     A N43                                  CHOICE(3 'Background Job #3')
+     A N44                                  CHOICE(4 'Background Job #4')
+     A  45                              3  3'No Jobs Available'
+     A                                      DSPATR(HI)
+     A  45                              4  3'for Request'
+     A                                      DSPATR(HI)
+      *-------------------------------------------------------------------------
+     A          R JOB1                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                  2 10'Background Job Number 1'
+     A                                  3  4'Status:'
+     A                                      DSPATR(HI)
+     A            STAT1         10      3 12
+     A                                      ALIAS(JOB_1_STATUS)
+     A                                  5  4'History   '
+     A                                      DSPATR(UL)
+     A                                  5 25'  Time  '
+     A                                      DSPATR(UL)
+     A            STSJ11        10      6  4
+     A                                      ALIAS(JOB1_HISTORY_1)
+     A            TIMJ11         6Y 0   6 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB1_TIME_1)
+     A            STSJ12        10      7  4
+     A                                      ALIAS(JOB1_HISTORY_2)
+     A            TIMJ12         6Y 0   7 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB1_TIME_2)
+     A            STSJ13        10      8  4
+     A                                      ALIAS(JOB1_HISTORY_3)
+     A            TIMJ13         6Y 0   8 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB1_TIME_3)
+     A            STSJ14        10      9  4
+     A                                      ALIAS(JOB1_HISTORY_4)
+     A            TIMJ14         6Y 0   9 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB1_TIME_4)
+      *-------------------------------------------------------------------------
+     A          R JOB2                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                  2 50'Background Job Number 2'
+     A                                  3 44'Status:'
+     A                                      DSPATR(HI)
+     A            STAT2         10      3 52
+     A                                      ALIAS(JOB_2_STATUS)
+     A                                  5 44'History   '
+     A                                      DSPATR(UL)
+     A                                  5 65'  Time  '
+     A                                      DSPATR(UL)
+     A            STSJ21        10      6 44
+     A                                      ALIAS(JOB2_HISTORY_1)
+     A            TIMJ21         6Y 0   6 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB2_TIME_1)
+     A            STSJ22        10      7 44
+     A                                      ALIAS(JOB2_HISTORY_2)
+     A            TIMJ22         6Y 0   7 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB2_TIME_2)
+     A            STSJ23        10      8 44
+     A                                      ALIAS(JOB2_HISTORY_3)
+     A            TIMJ23         6Y 0   8 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB2_TIME_3)
+     A            STSJ24        10      9 44
+     A                                      ALIAS(JOB2_HISTORY_4)
+     A            TIMJ24         6Y 0   9 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB2_TIME_4)
+     A          R JOB3                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                 12 10'Background Job Number 3'
+     A                                 13  4'Status:'
+     A                                      DSPATR(HI)
+     A            STAT3         10     13 12
+     A                                      ALIAS(JOB_3_STATUS)
+     A                                 15  4'History   '
+     A                                      DSPATR(UL)
+     A                                 15 25'  Time  '
+     A                                      DSPATR(UL)
+     A            STSJ31        10     16  4
+     A                                      ALIAS(JOB3_HISTORY_1)
+     A            TIMJ31         6Y 0  16 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB3_TIME_1)
+     A            STSJ32        10     17  4
+     A                                      ALIAS(JOB3_HISTORY_2)
+     A            TIMJ32         6Y 0  17 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB3_TIME_2)
+     A            STSJ33        10     18  4
+     A                                      ALIAS(JOB3_HISTORY_3)
+     A            TIMJ33         6Y 0  18 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB3_TIME_3)
+     A            STSJ34        10     19  4
+     A                                      ALIAS(JOB3_HISTORY_4)
+     A            TIMJ34         6Y 0  19 25EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB3_TIME_4)
+     A          R JOB4                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                 12 50'Background Job Number 4'
+     A                                 13 44'Status:'
+     A                                      DSPATR(HI)
+     A            STAT4         10     13 52
+     A                                      ALIAS(JOB_4_STATUS)
+     A                                 15 44'History   '
+     A                                      DSPATR(UL)
+     A                                 15 65'  Time  '
+     A                                      DSPATR(UL)
+     A            STSJ41        10     16 44
+     A                                      ALIAS(JOB4_HISTORY_1)
+     A            TIMJ41         6Y 0  16 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB4_TIME_1)
+     A            STSJ42        10     17 44
+     A                                      ALIAS(JOB4_HISTORY_2)
+     A            TIMJ42         6Y 0  17 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB4_TIME_2)
+     A            STSJ43        10     18 44
+     A                                      ALIAS(JOB4_HISTORY_3)
+     A            TIMJ43         6Y 0  18 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB4_TIME_3)
+     A            STSJ44        10     19 44
+     A                                      ALIAS(JOB4_HISTORY_4)
+     A            TIMJ44         6Y 0  19 65EDTWRD('  :  :  ')
+     A                                      ALIAS(JOB4_TIME_4)
+     A          R GRID
+     A                                  1  2'-----------------------------------
+     A                                      ------------------------------------
+     A                                      ----------'
+     A                                      COLOR(BLU)
+     A                                  2  2'|'
+     A                                      COLOR(BLU)
+     A                                  2 41'|'
+     A                                      COLOR(BLU)
+     A                                  2 80'|'
+     A                                      COLOR(BLU)
+     A                                  3  2'|'
+     A                                      COLOR(BLU)
+     A                                  3 41'|'
+     A                                      COLOR(BLU)
+     A                                  3 80'|'
+     A                                      COLOR(BLU)
+     A                                  4  2'|'
+     A                                      COLOR(BLU)
+     A                                  4 41'|'
+     A                                      COLOR(BLU)
+     A                                  4 80'|'
+     A                                      COLOR(BLU)
+     A                                  5  2'|'
+     A                                      COLOR(BLU)
+     A                                  5 41'|'
+     A                                      COLOR(BLU)
+     A                                  5 80'|'
+     A                                      COLOR(BLU)
+     A                                  6  2'|'
+     A                                      COLOR(BLU)
+     A                                  6 41'|'
+     A                                      COLOR(BLU)
+     A                                  6 80'|'
+     A                                      COLOR(BLU)
+     A                                  7  2'|'
+     A                                      COLOR(BLU)
+     A                                  7 41'|'
+     A                                      COLOR(BLU)
+     A                                  7 80'|'
+     A                                      COLOR(BLU)
+     A                                  8  2'|'
+     A                                      COLOR(BLU)
+     A                                  8 41'|'
+     A                                      COLOR(BLU)
+     A                                  8 80'|'
+     A                                      COLOR(BLU)
+     A                                  9  2'|'
+     A                                      COLOR(BLU)
+     A                                  9 41'|'
+     A                                      COLOR(BLU)
+     A                                  9 80'|'
+     A                                      COLOR(BLU)
+     A                                 10  2'|'
+     A                                      COLOR(BLU)
+     A                                 10 41'|'
+     A                                      COLOR(BLU)
+     A                                 10 80'|'
+     A                                      COLOR(BLU)
+     A                                 11  2'|----------------------------------
+     A                                      -----|------------------------------
+     A                                      ---------|'
+     A                                      COLOR(BLU)
+     A                                 12  2'|'
+     A                                      COLOR(BLU)
+     A                                 12 41'|'
+     A                                      COLOR(BLU)
+     A                                 12 80'|'
+     A                                      COLOR(BLU)
+     A                                 13  2'|'
+     A                                      COLOR(BLU)
+     A                                 13 41'|'
+     A                                      COLOR(BLU)
+     A                                 13 80'|'
+     A                                      COLOR(BLU)
+     A                                 14  2'|'
+     A                                      COLOR(BLU)
+     A                                 14 41'|'
+     A                                      COLOR(BLU)
+     A                                 14 80'|'
+     A                                      COLOR(BLU)
+     A                                 15  2'|'
+     A                                      COLOR(BLU)
+     A                                 15 41'|'
+     A                                      COLOR(BLU)
+     A                                 15 80'|'
+     A                                      COLOR(BLU)
+     A                                 16  2'|'
+     A                                      COLOR(BLU)
+     A                                 16 41'|'
+     A                                      COLOR(BLU)
+     A                                 16 80'|'
+     A                                      COLOR(BLU)
+     A                                 17  2'|'
+     A                                      COLOR(BLU)
+     A                                 17 41'|'
+     A                                      COLOR(BLU)
+     A                                 17 80'|'
+     A                                      COLOR(BLU)
+     A                                 18  2'|'
+     A                                      COLOR(BLU)
+     A                                 18 41'|'
+     A                                      COLOR(BLU)
+     A                                 18 80'|'
+     A                                      COLOR(BLU)
+     A                                 19  2'|'
+     A                                      COLOR(BLU)
+     A                                 19 41'|'
+     A                                      COLOR(BLU)
+     A                                 19 80'|'
+     A                                      COLOR(BLU)
+     A                                 20  2'|'
+     A                                      COLOR(BLU)
+     A                                 20 41'|'
+     A                                      COLOR(BLU)
+     A                                 20 80'|'
+     A                                      COLOR(BLU)
+     A                                 21  2'-----------------------------------
+     A                                      ------------------------------------
+     A                                      ----------'
+     A                                      COLOR(BLU)
+     A          R HLPFMT1
+     A                                      HLPSEQ(HFMT1 00)
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 12TIME
+     A                                  1 33'Monitor - Help'
+     A                                      DSPATR(HI)
+     A                                  3  1'This monitoring program demonstrat-
+     A                                      es the use of data queues for handl-
+     A                                      ing screen requests.  From this pro-
+     A                                      gram, you as the operator can contr-
+     A                                      ol four different    background job-
+     A                                      s.  Each background job will notify-
+     A                                       the monitoring program of     it''-
+     A                                      s status.  The following command ke-
+     A                                      ys are used to control the backgrou-
+     A                                      nd     jobs.'
+     A                                  9  1'F3=Exit'
+     A                                      DSPATR(HI)
+     A                                  9 17'This will exit the monitoring prog-
+     A                                      ram.  All background jobs will     -
+     A                                                 be terminated as well.'
+     A                                 12  1'F12=Cancel'
+     A                                      DSPATR(HI)
+     A                                 12 17'This will cancel the screen you ar-
+     A                                      e on.  If you are on the main      -
+     A                                                 screen this will act jus-
+     A                                      t like the F3 function.'
+     A                                 15  1'F5=Start Job'
+     A                                      DSPATR(HI)
+     A                                 15 17'This will start a given background-
+     A                                       job.  Only those jobs that        -
+     A                                                 are in an inactive statu-
+     A                                      s are eligible to start.'
+     A                                 18  1'F10=Release'
+     A                                      DSPATR(HI)
+     A                                 18 17'This will release a held job.'
+     A                                 20  1'F11=Hold'
+     A                                      DSPATR(HI)
+     A                                 20 17'This will hold a job that is not i-
+     A                                      n the inactive status.'
+     A                                 22  1'F18=End Job'
+     A                                      DSPATR(HI)
+     A                                 22 17'This will end a job that is not in-
+     A                                       the inactive status.'
+     A                                 24 73'Bottom'
+     A                                      DSPATR(HI)

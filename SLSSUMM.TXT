@@ -1,0 +1,9 @@
+     A          R SUMMFMT
+     A            CUST#          7P 0       ALIAS(CUSTOMER_NUMBER)
+     A            YEAR           2S 0       ALIAS(SALE_YEAR)
+     A            MONTH          2S 0       ALIAS(SALE_MONTH)
+     A            TOTAMT         9P 2       ALIAS(SALES_DOLLARS)
+      *
+     A          K CUST#
+     A          K YEAR
+     A          K MONTH

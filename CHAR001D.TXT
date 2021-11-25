@@ -1,0 +1,86 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      PRINT
+     A                                      HELP
+     A                                      HLPRCD(HLPFMT1)
+     A                                      CA03
+     A                                      MNUBARSW(CA10)
+     A                                      MNUCNL(CA12)
+      *-------------------------------------------------------------------------
+     A          R MENUBAR
+     A                                      MNUBAR
+     A                                      MNUBARDSP
+     A            MNUCHC         2Y 0B  1  2ALIAS(PULL_DOWN_MENU)
+     A                                      MNUBARCHC(1 SPECIAL '>Special Effec-
+     A                                      ts')
+      *-------------------------------------------------------------------------
+     A          R SPECIAL                   PULLDOWN
+     A                                      CF05
+     A                                      CF07
+     A            PULCHC         2Y 0B  1  1SNGCHCFLD
+     A                                      ALIAS(PULL_MENU_1_CHIOCE)
+     A                                      CHECK(ER)
+     A                                      CHOICE(1 'Turn to >Uppercase')
+     A                                      CHCACCEL(1 'F5')
+     A                                      CHOICE(2 'Turn to >Lowercase')
+     A                                      CHCACCEL(2 'F7')
+     A                                      CHOICE(3 'Calculate Le>ngth of stri-
+     A                                      ng')
+     A                                      CHOICE(4 '>Clear String')
+      *-------------------------------------------------------------------------
+     A          R FMT01
+     A                                      MNUBARDSP(MENUBAR &MNUCHC &PULOPT)
+     A            MNUCHC         2Y 0H      ALIAS(PULL_DOWN_MENU)
+     A            PULOPT         2S 0H      ALIAS(PULL_MENU_CHOICE)
+     A                                 13 10'Enter String:'
+     A            STRING        50A  B 13 25CHECK(LC)
+     A                                      DSPATR(PC)
+     A  70                                  ERRMSG('No string entered.  Cannot -
+     A                                      perform function requested' 70)
+     A                                 15 10'Length of String:'
+     A            LENGTH         2Y 0O 15 29EDTCDE(4)
+     A                                 24  3'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 24 14'F10=Menu Bar'
+     A                                      COLOR(BLU)
+     A                                 24 30'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R HLPFMT1
+     A                                      HLPSEQ(HFMT1 00)
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 11TIME
+     A                                      EDTWRD('  :  :  ')
+     A                                  1 26'Special Effects - Help'
+     A                                      DSPATR(HI)
+     A                                  4  1'The special effects program allows-
+     A                                       you to perform the following funct-
+     A                                      ions       against a string:       -
+     A                                                                         -
+     A                                                                         -
+     A                                                                         -
+     A                                                                         -
+     A                                          1.  Convert the string to all u-
+     A                                      ppercase characters.               -
+     A                                                    2.  Convert the strin-
+     A                                      g to all lowercase characters.     -
+     A                                                              3.  Calcula-
+     A                                      te the length of the string.       -
+     A                                                                        4-
+     A                                      .  Clear the string value.         -
+     A                                                                         -
+     A                                                                         -
+     A                                                                         -
+     A                                                 Each of these functions -
+     A                                      is performed by use of the menu bar-
+     A                                      .                                  -
+     A                                                                         -
+     A                                                                     The -
+     A                                      first two options can be selected b-
+     A                                      y an accelerator key.              -
+     A                                                                         -
+     A                                                                         -
+     A                                                      This ends the help -
+     A                                      for this program.'
+     A                                 24 73'Bottom'
+     A                                      DSPATR(HI)

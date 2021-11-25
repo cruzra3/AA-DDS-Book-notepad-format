@@ -1,0 +1,820 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      PRINT
+     A                                      CA03(03 'End')
+     A                                      CF10(10 'Toggle switch form with or-
+     A                                       without CS')
+      *-------------------------------------------------------------------------
+     A          R COLOR1
+     A                                      PUTOVR
+     A                                  1 33'Color/Attribute Test'
+     A                                  3  3'ATTRIBUTES'
+     A                                  3 18'BLUE'
+     A                                      COLOR(BLU)
+     A                                  3 26'RED'
+     A                                      COLOR(RED)
+     A                                  3 33'GREEN'
+     A                                      COLOR(GRN)
+     A                                  3 41'WHITE'
+     A                                      COLOR(WHT)
+     A                                  3 49'PINK'
+     A                                      COLOR(PNK)
+     A                                  3 54'TURQUOISE'
+     A                                      COLOR(TRQ)
+     A                                  3 65'YELLOW'
+     A                                      COLOR(YLW)
+     A                                  3 73'NO'
+     A                                  3 76'COLOR'
+     A                                  4 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                  4 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                  4 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                  4 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                  4 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                  4 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                  4 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                  4 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                  6 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  6 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                  8 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  8 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                  9 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                  9 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 10 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 10 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                      DSPATR(BL)
+     A                                 11 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 11 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 13 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 13 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(HI)
+     A                                 14 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 14 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(BL)
+     A                                 15 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 15 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                      DSPATR(UL)
+     A                                 16 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 16 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A                                 17 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 17 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(UL)
+     A                                 18 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 18 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                      DSPATR(UL)
+     A                                 20 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 20 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(RI)
+     A                                 21 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 21 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(HI)
+     A                                 22 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 22 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(BL)
+     A                                 23 17'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(BLU)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 25'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(RED)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 33'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(GRN)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 41'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(WHT)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 48'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(PNK)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 56'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(TRQ)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 66'aaaaa'
+     A                                      OVRATR
+     A                                      COLOR(YLW)
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+     A                                 23 75'aaaaa'
+     A                                      OVRATR
+     A  20                                  DSPATR(CS)
+     A                                      DSPATR(UL)
+      *-------------------------------------------------------------------------
+     A          R COLOR2
+     A                                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 13TIME
+     A  20                              4  6' CS '
+     A N20                              4  6'NONE'
+     A N20                              6  1'   RI-HI-BL-UL'
+     A  20                              6  1'CS-RI-HI-BL-UL'
+     A N20                              8  2'   RI-HI-BL'
+     A  20                              8  2'CS-RI-HI-BL'
+     A N20                              9  2'   RI-HI-UL'
+     A  20                              9  2'CS-RI-HI-UL'
+     A N20                             10  2'   RI-BL-UL'
+     A  20                             10  2'CS-RI-BL-UL'
+     A N20                             11  2'   HI-BL-UL'
+     A  20                             11  2'CS-HI-BL-UL'
+     A N20                             13  3'   RI-HI'
+     A  20                             13  3'CS-RI-HI'
+     A N20                             14  3'   RI-BL'
+     A  20                             14  3'CS-RI-BL'
+     A N20                             15  3'   RI-UL'
+     A  20                             15  3'CS-RI-UL'
+     A N20                             16  3'   HI-BL'
+     A  20                             16  3'CS-HI-BL'
+     A N20                             17  3'   HI-UL'
+     A  20                             17  3'CS-HI-UL'
+     A N20                             18  3'   BL-UL'
+     A  20                             18  3'CS-BL-UL'
+     A N20                             20  4'   RI'
+     A  20                             20  4'CS-RI'
+     A N20                             21  4'   HI'
+     A  20                             21  4'CS-HI'
+     A N20                             22  4'   BL'
+     A  20                             22  4'CS-BL'
+     A N20                             23  4'   UL'
+     A  20                             23  4'CS-UL'
+     A                                 24 17'F3-End'
+     A N20                             24 52'F10-With CS Attribute   '
+     A  20                             24 52'F10-Without CS Attribute'

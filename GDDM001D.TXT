@@ -1,0 +1,15 @@
+     A                                      CA03
+     A                                      CA12
+      *-------------------------------------------------------------------------
+     A          R FMT01
+     A                                      ALWGPH
+     A                                 10 28'This program is brought'
+     A                                 11 35'to you by'
+     A                                 12 32'James Coolbaugh'
+     A                                      COLOR(RED)
+     A                                 13 32'and Duke Press'
+     A                                      COLOR(PNK)
+     A                                 24  3'F3=Exit'
+     A                                      COLOR(WHT)
+     A                                 24 13'F12=Cancel'
+     A                                      COLOR(WHT)

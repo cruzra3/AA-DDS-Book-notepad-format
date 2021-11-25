@@ -1,0 +1,49 @@
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+     A                                      INVITE
+      *-------------------------------------------------------------------------
+     A          R FMT01
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 11TIME
+     A                                  1 26'Multiple Device Example Program'
+     A                                      DSPATR(HI)
+     A                                  5 20'Enter Device Names to Receive Scre-
+     A                                      ens'
+     A                                      DSPATR(UL)
+     A            DEV01         10A  B  7 22ALIAS(DEVICE_1)
+     A            STAT01        20   O  7 35
+     A            DEV02         10A  B  8 22ALIAS(DEVICE_2)
+     A            STAT02        20   O  8 35
+     A            DEV03         10A  B  9 22ALIAS(DEVICE_3)
+     A            STAT03        20   O  9 35
+     A            DEV04         10A  B 10 22ALIAS(DEVICE_4)
+     A            STAT04        20   O 10 35
+     A            DEV05         10A  B 11 22ALIAS(DEVICE_5)
+     A            STAT05        20   O 11 35
+     A            DEV06         10A  B 12 22ALIAS(DEVICE_6)
+     A            STAT06        20   O 12 35
+     A            DEV07         10A  B 13 22ALIAS(DEVICE_7)
+     A            STAT07        20   O 13 35
+     A            DEV08         10A  B 14 22ALIAS(DEVICE_8)
+     A            STAT08        20   O 14 35
+     A            DEV09         10A  B 15 22ALIAS(DEVICE_9)
+     A            STAT09        20   O 15 35
+     A            DEV10         10A  B 16 22ALIAS(DEVICE_10)
+     A            STAT10        20   O 16 35
+      *-------------------------------------------------------------------------
+     A          R FMT02
+     A                                  1  4'Device receiving image:'
+     A                                      DSPATR(RI)
+     A            DEVICE        10A  O  1 28ALIAS(DEVICE_NAME)
+     A                                  6 22'This program is brought'
+     A                                  8 29'to you by'
+     A                                 10 26'James Coolbaugh'
+     A                                      COLOR(RED)
+     A                                 12 26'and Duke Press'
+     A                                      COLOR(PNK)
+     A                                 24  3'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 24 13'F12=Cancel'
+     A                                      COLOR(BLU)

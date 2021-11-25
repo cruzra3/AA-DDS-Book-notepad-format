@@ -1,0 +1,13 @@
+      *
+      *  NOTE:  Compile display file with WAITRCD(60).
+      *
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+     A                                      INVITE
+      *-------------------------------------------------------------------------
+     A          R FMT1                      KEEP BLINK
+     A                                 10 10'After 60 seconds this job will dis-
+     A                                      connect'
+     A                                 24  2'F3=Exit' COLOR(BLU)
+     A                                 24 48'F12=Cancel' COLOR(BLU)

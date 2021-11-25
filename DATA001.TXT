@@ -1,0 +1,184 @@
+      *------------------------------------------------------------------*
+      * DATA001  - Data Entry Example                                    *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    60  -  Display Subfile Control Format                         *
+      *   N60  -  Initialize the subfile                                 *
+      *    61  -  Display Subfile Format                                 *
+      *    62  -  Subfile End                                            *
+      *                                                                  *
+      *    70  -  No records found that meet search criteria             *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FDATA001DCF  E                    WORKSTN      KINFDS DSPINF
+     F                                        RRN1  KSFILE SFL01
+     FTIMECARDO   E                    DISK                      A
+     IDSPINF      DS
+     I                                      369 369 @@AID
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     I              X'F5'                 C         ##RUP
+     C/EJECT
+      *
+      *   Mainline
+      *
+     C                     Z-ADD2359      STRTIM
+     C           EXIT      DOUEQYES                        Stay until exit
+      *
+     C                     EXFMTSELECT
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C                     OTHER                           Enter key
+     C                     EXSR @@DATA
+     C                     MOVE NO        CANCEL           Turn off backup
+     C                     ENDSL
+      *
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+     C/EJECT
+      *
+      *  Data Entry Screen processing
+      *
+     C           @@DATA    BEGSR
+      *
+      *  Initialize subfile
+      *
+     C                     MOVE NO        EXIT    1
+     C                     MOVE NO        CANCEL  1
+     C                     MOVE NO        ERROR   1
+      *
+     C                     MOVE *OFF      *IN60
+     C                     MOVE *OFF      *IN61
+     C                     MOVE *OFF      *IN62
+     C                     WRITECTL01
+     C                     MOVE *ON       *IN60
+     C                     MOVE *ON       *IN61
+     C                     Z-ADD64        SVRRN1  40       Last RRN
+     C                     Z-ADD1         DSPREC           Display page
+      *
+      *  Display subfile and process user request
+      *
+     C           EXIT      DOWEQNO                         Until exit
+     C           CANCEL    ANDEQNO
+     C           ERROR     IFEQ NO
+     C                     WRITEBTM01
+     C                     ENDIF
+     C                     EXFMTCTL01                      Show selection
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       CANCEL
+     C           @@AID     WHEQ ##RUP                      Roll up rqs
+     C                     EXSR @@PAGE
+      *
+     C                     OTHER                           Enter key
+     C                     EXSR @@VLD
+     C           ERROR     CASEQNO        @@UPD
+     C                     ENDCS
+      *
+     C                     ENDSL
+      *
+     C                     ENDDO                           End Exit loop
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Load one page of data
+      *
+     C           @@PAGE    BEGSR
+      *
+      *  Restore RRN values
+      *
+     C                     Z-ADDSVRRN1    RRN1    40       Last loaded rec
+     C           RRN1      ADD  1         DSPREC  40       Display RRN#
+      *
+     C           1         DO   32
+      *
+     C                     Z-ADD0         STRTIM
+     C                     Z-ADD0         ENDTIM
+     C                     Z-ADD0         PROJ#
+     C                     ADD  1         RRN1
+     C                     WRITESFL01
+      *
+     C                     ENDDO
+      *
+      *  Save RRN values for next page
+      *
+     C                     Z-ADDRRN1      SVRRN1           Last RRN
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Validate subfile data
+      *
+     C           @@VLD     BEGSR
+      *
+     C                     MOVE NO        ERROR   1
+      *
+     C                     READCSFL01                    90 Get changed
+     C           *IN90     DOWEQ*OFF
+     C           STRTIM    IFNE 0                          Have data
+     C           ENDTIM    ORNE 0
+     C           PROJ#     ORNE 0
+      *
+     C                     MOVE STRTIM    MINUTE  20       Starting time
+     C           STRTIM    IFLT 0                            invalid
+     C           STRTIM    ORGT 2400
+     C           MINUTE    ORLT 0
+     C           MINUTE    ORGT 59
+     C                     MOVE *ON       *IN51
+     C                     MOVE *ON       *IN70
+     C                     MOVE YES       ERROR
+     C                     ENDIF
+      *
+     C                     MOVE ENDTIM    MINUTE  20       Ending time
+     C           ENDTIM    IFLT 0                            invalid
+     C           ENDTIM    ORGT 2400
+     C           MINUTE    ORLT 0
+     C           MINUTE    ORGT 59
+     C                     MOVE *ON       *IN52
+     C                     MOVE *ON       *IN71
+     C                     MOVE YES       ERROR
+     C                     ENDIF
+      *
+     C                     MOVE *ON       *IN50            SFLNXTCHG
+     C                     UPDATSFL01
+     C                     MOVE *OFF      *IN51            Turn off RI
+     C                     MOVE *OFF      *IN52
+      *
+     C                     ENDIF
+      *
+     C                     READCSFL01                    90 Get changed
+     C                     ENDDO
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Post subfile data to file
+      *
+     C           @@UPD     BEGSR
+      *
+     C                     READCSFL01                    90 Get changed
+     C           *IN90     DOWEQ*OFF
+     C           STRTIM    IFNE 0                          Have data
+     C           ENDTIM    ORNE 0
+     C           PROJ#     ORNE 0
+     C                     WRITECARDFMT
+     C                     ENDIF
+     C                     READCSFL01                    90 Get changed
+     C                     ENDDO
+      *
+     C                     MOVE YES       CANCEL
+      *
+     C                     ENDSR

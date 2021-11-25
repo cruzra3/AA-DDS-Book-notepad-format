@@ -1,0 +1,103 @@
+      *------------------------------------------------------------------*
+      * CHAR001  - Special Effects Program                               *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    70  -  String is blank.  Cannot perform function requested    *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FCHAR001DCF  E                    WORKSTN      KINFDS DSPINF
+     IDSPINF      DS
+     I                                      369 369 @@AID
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+     I              X'33'                 C         ##F3
+     I              X'35'                 C         ##F5
+     I              X'37'                 C         ##F7
+     I              X'3C'                 C         ##F12
+     I              'ABCDEFGHIJKLMNOPQRST-C         UP
+     I              'UVWXYZ'
+     I              'abcdefghijklmnopqrst-C         LO
+     I              'uvwxyz'
+     C/EJECT
+     C                     MOVE NO        EXIT    1
+      *
+      *   Mainline
+      *
+     C           EXIT      DOUEQYES                        Stay until exit
+      *
+     C                     EXFMTFMT01
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F5                       Uppercase
+     C                     EXSR @@UPPR
+     C           @@AID     WHEQ ##F7                       Lowercase
+     C                     EXSR @@LOWR
+     C*
+     C           MNUCHC    WHEQ 1                          Pulldown menu
+     C*
+     C           PULOPT    CASEQ1         @@UPPR
+     C           PULOPT    CASEQ2         @@LOWR
+     C           PULOPT    CASEQ3         @@CALC
+     C           PULOPT    CASEQ4         @@CLR
+     C                     ENDCS
+     C*
+     C                     ENDSL
+      *
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+     C/EJECT
+      *
+      *  Turn string into all uppercase
+      *
+     C           @@UPPR    BEGSR
+      *
+     C           STRING    IFNE *BLANKS
+     C           LO:UP     XLATESTRING    STRING
+     C                     ELSE
+     C                     MOVE *ON       *IN70
+     C                     ENDIF
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Turn string into all lowercase
+      *
+     C           @@LOWR    BEGSR
+      *
+     C           STRING    IFNE *BLANKS
+     C           UP:LO     XLATESTRING    STRING
+     C                     ELSE
+     C                     MOVE *ON       *IN70
+     C                     ENDIF
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Calculate length of string
+      *
+     C           @@CALC    BEGSR
+      *
+     C           STRING    IFNE *BLANKS
+     C           ' '       CHEKRSTRING    LENGTH
+     C                     ELSE
+     C                     MOVE *ON       *IN70
+     C                     ENDIF
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Clear string
+      *
+     C           @@CLR     BEGSR
+      *
+     C                     MOVE *BLANKS   STRING
+     C                     Z-ADD0         LENGTH
+      *
+     C                     ENDSR

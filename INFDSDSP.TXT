@@ -1,0 +1,198 @@
+     I*---------------------------------------------------------------------
+     I* Fields beginning with @$ are available only after a POST operation.
+     I* All other fields are available at all times.
+     I*---------------------------------------------------------------------
+     I* File name, internal name (F-spec)
+     I                                     *FILE    @@FILI
+     I* End of file indicator (1=EOF)
+     I                                       10  10 @@EOF
+     I* Status code
+     I*    00000 = No exception or error
+     I*    00002 = Function key pressed
+     I*    00011 = End of file during read
+     I*    00013 = Subfile is full during WRITE
+     I*    01011 = Undefined record type
+     I*    01121 = Print key pressed
+     I*    01122 = Roll Up/Page Down key pressed
+     I*    01123 = Roll Down/Page Up key pressed
+     I*    01124 = Clear key pressed
+     I*    01125 = Help key pressed
+     I*    01126 = Home key pressed
+     I*    01211 = I/O attempt on closed file
+     I*    01215 = OPEN attempted on open file
+     I*    01216 = Error during implicit OPEN
+     I*    01217 = Error during explicit OPEN
+     I*    01251 = Permanent I/O error
+     I*    01255 = Session or device error
+     I*    01261 = Attempt to exceed maximum number of acquired devices
+     I*    01281 = Operation attempt on unacquired device
+     I*    01282 = ENDJOB OPTION(*CNTRLD) in progress
+     I*    01285 = Attempt to acquire acquired device
+     I*    01286 = Attempt to open shared file with SAVDS or IND
+     I*    01287 = Response indicators overlap IND indicators
+     I*    01299 = Other I/O error detected
+     I*    01331 = Wait time exceeded for READ
+     I                                     *STATUS  @@STS
+     I* Operation code
+     I*    First five characters have opcode executed last.
+     I*    Remaining character can be:
+     I*       'F' = Operation performed on file name
+     I*       'R' = Operation performed on record name
+     I*       'I' = Operation performed implicitly
+     I                                     *OPCODE  @@OPER
+     I* Name of routine with exception.  Can have the following values:
+     I*    '*INIT   ' = Program initiation
+     I*    '*DETL   ' = Detail lines
+     I*    '*GETIN  ' = Get input record
+     I*    '*DETC   ' = Detail calculations
+     I*    '*TERM   ' = Program termination
+     I*    First 8 characters of name of called program
+     I*    Name of a subroutine
+     I*    Name of EXCPT
+     I                                     *ROUTINE @@ROUT
+     I* Source statement number
+     I                                       30  37 @@SRC#
+     I* User-specified reason for error on SPECIAL file
+     I                                       38  420@@URES
+     I* Record identification (indicator or name)
+     I                                     *RECORD  @@RCDI
+     I* Message identification
+     I                                       46  52 @@MSGI
+     I* MI/ODT number
+     I                                       53  56 @@MI#
+     I* Screen size
+     I                                     *SIZE    @$SCSZ
+     I* National language input capability
+     I                                     *INP     @$NLI
+     I* National language output capability
+     I                                     *OUT     @$NLO
+     I* Perferred national language
+     I                                     *MODE    @$NLP
+     I* Open data path type (always 'DS')
+     I                                       81  82 @@ODP
+     I* Name of the file actually opened
+     I                                       83  92 @@FILE
+     I* Name of the library
+     I                                       93 102 @@LIB
+     I* Record length
+     I                                    B 125 1260@@RECL
+     I* File type
+     I                                    B 147 1480@@FILT
+     I* Number of rows on screen
+     I                                    B 152 1530@@ROWS
+     I* Number of columns on screen
+     I                                    B 154 1550@@COLS
+     I* Requester device name
+     I                                      197 206 @@RQSD
+     I* File open count
+     I                                    B 207 2080@@OPN#
+     I* Miscellaneous flags
+     I*    Bit 5:  ON if INDARA keyword used in DDS
+     I*    Bit 6:  ON if program supplies buffers
+     I                                      213 213 @@FLG1
+     I* Open identifier
+     I                                      214 215 @@OPNI
+     I* Maximum record format length
+     I                                    B 216 2170@@MXRL
+     I* Write operation count
+     I                                    B 243 2460@@WRT#
+     I* Read operation count
+     I                                    B 247 2500@@RD#
+     I* EXFMT operation count
+     I                                    B 251 2540@@WR#
+     I* Other operation count
+     I                                    B 255 2580@@OOP#
+     I* Current operation
+     I*    x'01' = Read
+     I*    x'05' = Write
+     I*    x'06' = EXFMT
+     I*    x'07' = Update
+     I*    x'08' = Delete
+     I*    x'09' = FEOD
+     I*    x'11' = Release device
+     I*    x'12' = Acquire device
+     I                                      260 260 @@COPR
+     I* Device class
+     I*    x'07' = 5251
+     I*    x'0B' = 5291
+     I*    x'0D' = 5292
+     I*    x'12' = 5555-B01
+     I*    x'13' = 3270
+     I*    x'15' = Graphics-capable
+     I*    x'16' = Financial
+     I*    x'17' = 3180
+     I*    x'26' = 3179-2
+     I*    x'27' = 3196-A
+     I*    x'28' = 3196-B
+     I*    x'33' = 3197-C1
+     I*    x'34' = 3197-C2
+     I*    x'35' = 3197-D1
+     I*    x'36' = 3197-D2
+     I*    x'37' = 3197-W1
+     I*    x'38' = 3197-W2
+     I*    x'39' = 5555-E01
+     I*    x'3E' = 3476-EA
+     I*    x'3F' = 3477-FG
+     I*    x'44' = 3477-FA
+     I*    x'45' = 3477-FC
+     I*    x'46' = 3477-FD
+     I*    x'47' = 3477-FW
+     I*    x'48' = 3477-FE
+     I*    x'4D' = Network virtual terminal
+     I*    x'51' = 5555-C01
+     I*    x'52' = 5555-F01
+     I*    x'56' = 3476-EC
+     I*    x'58' = 5555-G01
+     I*    x'59' = 5555-G02
+     I*    x'5D' = 3486-BA
+     I*    x'5F' = 3486-HA
+     I*    x'60' = 3487-HG
+     I*    x'61' = 3487-HW
+     I*    x'62' = 3487-HC
+     I                                      272 272 @@DEVC
+     I* Device name
+     I                                      273 282 @@DEV
+     I* AID byte
+     I*    x'31' = F1  pressed
+     I*    x'32' = F2  pressed
+     I*    x'33' = F3  pressed
+     I*    x'34' = F4  pressed
+     I*    x'35' = F5  pressed
+     I*    x'36' = F6  pressed
+     I*    x'37' = F7  pressed
+     I*    x'38' = F8  pressed
+     I*    x'39' = F9  pressed
+     I*    x'3A' = F10 pressed
+     I*    x'3B' = F11 pressed
+     I*    x'3C' = F12 pressed
+     I*    x'B1' = F13 pressed
+     I*    x'B2' = F14 pressed
+     I*    x'B3' = F15 pressed
+     I*    x'B4' = F16 pressed
+     I*    x'B5' = F17 pressed
+     I*    x'B6' = F18 pressed
+     I*    x'B7' = F19 pressed
+     I*    x'B8' = F20 pressed
+     I*    x'B9' = F21 pressed
+     I*    x'BA' = F22 pressed
+     I*    x'BB' = F23 pressed
+     I*    x'BC' = F24 pressed
+     I*    x'BD' = Clear pressed
+     I*    x'F1' = Enter pressed
+     I*    x'F3' = Help pressed
+     I*    x'F4' = Roll Down/Page Up pressed
+     I*    x'F5' = Roll Up/Page Down pressed
+     I*    x'F6' = Print pressed
+     I*    x'F8' = Record backspace
+     I*    x'3F' = Auto Enter for selector light pen
+     I                                      369 369 @@AID
+     I* Cursor location
+     I                                    B 370 3710@@CSRL
+     I* RRN of a subfile record
+     I                                    B 376 3790@@SFLR
+     I* First subfile record on page
+     I                                    B 380 3830@@SFL1
+     I* Total records in a subfile
+     I                                    B 384 3870@@SFLT
+     I* Cursor location within window
+     I                                    B 388 3890@@CSRW

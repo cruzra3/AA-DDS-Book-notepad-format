@@ -1,0 +1,19 @@
+     A          R CUSTFMT
+     A            CUST#          7P 0       ALIAS(CUSTOMER_NUMBER)
+     A            NAME          30A         ALIAS(CUSTOMER_NAME)
+     A            ADDR1         30A         ALIAS(CUSTOMER_ADDRESS_1)
+     A            ADDR2         30A         ALIAS(CUSTOMER_ADDRESS_2)
+     A            CITY          25A         ALIAS(CUSTOMER_CITY)
+     A            STATE          2A         ALIAS(CUSTOMER_STATE)
+     A            ZIP5           5S 0       ALIAS(CUSTOMER_ZIP_5)
+     A            ZIP4           4S 0       ALIAS(CUSTOMER_ZIP_4)
+     A            VOICEA         3S 0       ALIAS(PHONE_AREA_CODE)
+     A            VOICEB         3S 0       ALIAS(PHONE_PREFIX)
+     A            VOICEC         4S 0       ALIAS(PHONE_NUMBER)
+     A            FAXA           3S 0       ALIAS(FAX_AREA_CODE)
+     A            FAXB           3S 0       ALIAS(FAX_PREFIX)
+     A            FAXC           4S 0       ALIAS(FAX_NUMBER)
+     A            CONTCT        25A         ALIAS(CUSTOMER_CONTACT_NAME)
+     A            EXTN           4A         ALIAS(CONTACT_PHONE_EXTENSION)
+     A*
+     A          K CUST#

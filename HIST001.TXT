@@ -1,0 +1,120 @@
+      *------------------------------------------------------------------*
+      *  HIST001 - Display Customer Sales History                        *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    03  -  End of Program                                         *
+      *    12  -  Cancel Request                                         *
+      *                                                                  *
+      *    25  -  ROLLUP to next sales record                            *
+      *    26  -  ROLLDOWN to previous sales record                      *
+      *                                                                  *
+      *    69  -  Roll up/down error                                     *
+      *    70  -  No sales for customer number                           *
+      *                                                                  *
+      *    90  -  General I/O indicator                                  *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FORDERHL1IF  E           K        DISK
+     FHIST001DCF  E                    WORKSTN
+     I            DS
+      *  Structure to flip date formats
+     I                                        1   6 #YMD
+     I                                        1   2 #YR
+     I                                        3   4 #MM
+     I                                        5   6 #DD
+     I                                        7   8 #YY
+     I                                        3   8 #MDY
+      *
+     I              'YES'                 C         YES
+     I              'NO '                 C         NO
+     C           KEYORD    KLIST
+     C                     KFLD           CUST#
+     C                     KFLD           DATE
+     C                     KFLD           SALEO#
+     C                     KFLD           INV#
+      *
+      *  Mainline
+      *
+     C           *IN03     DOWEQ*OFF
+     C                     EXFMTFMT01                      Ask for Cust#
+      *
+     C           *IN03     IFEQ *OFF
+     C                     EXSR @#VLD                      Validate sales
+     C           ANYERR    CASEQNO        @#DSP            Show sales rec
+     C                     ENDCS
+     C                     ENDIF
+      *
+     C                     ENDDO                           End *IN01 Loop
+      *
+     C                     MOVE *ON       *INLR
+     C                     RETRN
+     C/EJECT
+      ********************************************************************
+      *          *                                                       *
+      *  @#VLD   *   Validate that sales records exist                   *
+      *          *                                                       *
+      ********************************************************************
+      *
+     C           @#VLD     BEGSR
+      *
+     C                     MOVE NO        ANYERR  3
+      *
+      *  Chain to history file with customer number entered
+      *
+     C           CUST#     CHAINORDERHL1             70
+     C           *IN70     IFEQ *ON                        No sales
+     C                     MOVE YES       ANYERR
+     C                     ENDIF
+      *
+     C                     ENDSR
+     C/EJECT
+      ********************************************************************
+      *          *                                                       *
+      *  @#DSP   *   Display Sales Detail Record                         *
+      *          *                                                       *
+      ********************************************************************
+      *
+     C           @#DSP     BEGSR
+      *
+      *  Get first sales record
+      *
+     C           CUST#     CHAINORDERHL1             90    Get Sales
+      *
+      *  Stay on screen until exit requested
+      *
+     C           *IN03     DOWEQ*OFF                       While not F3
+     C           *IN12     ANDEQ*OFF                        or F12
+      *  set screen variables
+     C                     MOVE DATE      #YMD             Flip date to
+     C                     MOVE #YR       #YY                MDY format
+     C                     MOVE #MDY      DSPDAT
+     C           QTY       MULT PRICE     EXTAMT           Calc ext amt
+      *
+     C                     EXFMTFMT02                      Show record
+      *
+     C           *IN03     IFEQ *OFF                       Not F3 or F12
+     C           *IN12     ANDEQ*OFF
+      *
+     C                     SELEC
+     C           *IN25     WHEQ *ON                        Roll UP
+     C           CUST#     READEORDERHL1                 69 Get next rec
+     C           *IN69     IFEQ *ON
+     C           KEYORD    CHAINORDERHL1             90    Reget record
+     C                     ENDIF
+      *
+     C           *IN26     WHEQ *ON                        Roll Down
+     C           CUST#     REDPEORDERHL1                 69 Get prior rec
+     C           *IN69     IFEQ *ON
+     C           KEYORD    CHAINORDERHL1             90    Reget record
+     C                     ENDIF
+      *
+     C                     ENDSL
+      *
+     C                     ENDIF                           End cmd test
+      *
+     C                     ENDDO                           End cmd loop
+      *
+     C                     MOVE *OFF      *IN12            Turn Cancel off
+      *
+     C                     ENDSR

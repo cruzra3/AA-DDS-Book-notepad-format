@@ -1,0 +1,218 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(SLSSUMM)
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+      *-------------------------------------------------------------------------
+     A          R SELECT
+     A                                      BLINK
+     A                                      KEEP
+     A                                  1 29'Customer Sales Summary'
+     A                                      DSPATR(HI)
+     A                                  4  2'Enter customer number and press en-
+     A                                      ter.'
+     A                                      COLOR(BLU)
+     A                                  6 11'Customer Number:'
+     A            CUSNBR    R        B  6 29REFFLD(CUST#)
+     A                                      ALIAS(CUSTOMER_NUMBER)
+     A  70                                  ERRMSG('No sales summary found for -
+     A                                      customer.' 70)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R SFL01                     SFL
+     A            MONTH     R        O  6 22ALIAS(SALES_MONTH)
+     A            YEAR      R        O  6 25ALIAS(SALES_YEAR)
+     A            TOTAMT    R        O  6 30ALIAS(SALES_DOLLARS)
+     A                                      EDTCDE(4)
+      *-------------------------------------------------------------------------
+     A          R CTL01                     SFLCTL(SFL01)
+     A                                      SFLSIZ(0032)
+     A                                      SFLPAG(0016)
+     A  60                                  SFLDSPCTL
+     A  61                                  SFLDSP
+     A N60                                  SFLCLR
+     A  62                                  SFLEND(*MORE)
+     A N62                                  ROLLUP
+     A                                      CF15
+     A                                      CF17
+     A                                      OVERLAY
+     A            DSPREC         4S 0H      SFLRCDNBR
+     A                                  1 29'Customer Sales Summary'
+     A                                      DSPATR(HI)
+     A                                  3  3'Customer:'
+     A                                      COLOR(BLU)
+     A            CUST#     R        O  3 13REFFLD(CUST# CUSTMAST)
+     A                                      ALIAS(CUSTOMER_NUMBER)
+     A                                      EDTCDE(4)
+     A            NAME      R        O  3 22REFFLD(NAME CUSTMAST)
+     A                                      ALIAS(CUSTOMER_NAME)
+     A                                  5 22'Date '
+     A                                      DSPATR(UL)
+     A                                  5 30'Amount    '
+     A                                      DSPATR(UL)
+      *-------------------------------------------------------------------------
+     A          R BTM01
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 12'F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 23 25'F15=Vertical Bar Chart'
+     A                                      COLOR(BLU)
+     A                                 23 50'F17=Horizontal Bar Chart'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R VRTBAR
+     A                                      CF17
+     A N63                                  ROLLUP
+     A N64                                  ROLLDOWN
+     A                                  1 29'Customer Sales Summary'
+     A                                      DSPATR(HI)
+     A                                  1 64'VERTICAL'
+     A                                  3  3'Customer:'
+     A                                      COLOR(BLU)
+     A            CUST#     R        O  3 13REFFLD(CUST# CUSTMAST)
+     A                                      ALIAS(CUSTOMER_NUMBER)
+     A                                      EDTCDE(4)
+     A            NAME      R        O  3 22REFFLD(NAME CUSTMAST)
+     A                                      ALIAS(CUSTOMER_NAME)
+     A*  VERTICAL LINE INFORMATION
+     A            AMT4           7  0O  5  1EDTCDE(4)
+     A            AMT3           7  0O  9  1EDTCDE(4)
+     A            AMT2           7  0O 13  1EDTCDE(4)
+     A            AMT1           7  0O 17  1EDTCDE(4)
+     A                                 21  7'0'
+     A*  VERTICAL BAR #1
+     A            VB1C16         6   O  5 14
+     A            VB1C15         6   O  6 14
+     A            VB1C14         6   O  7 14
+     A            VB1C13         6   O  8 14
+     A            VB1C12         6   O  9 14
+     A            VB1C11         6   O 10 14
+     A            VB1C10         6   O 11 14
+     A            VB1C9          6   O 12 14
+     A            VB1C8          6   O 13 14
+     A            VB1C7          6   O 14 14
+     A            VB1C6          6   O 15 14
+     A            VB1C5          6   O 16 14
+     A            VB1C4          6   O 17 14
+     A            VB1C3          6   O 18 14
+     A            VB1C2          6   O 19 14
+     A            VB1C1          6   O 20 14
+     A*  VERTICAL BAR #2
+     A            VB2C16         6   O  5 29
+     A            VB2C15         6   O  6 29
+     A            VB2C14         6   O  7 29
+     A            VB2C13         6   O  8 29
+     A            VB2C12         6   O  9 29
+     A            VB2C11         6   O 10 29
+     A            VB2C10         6   O 11 29
+     A            VB2C9          6   O 12 29
+     A            VB2C8          6   O 13 29
+     A            VB2C7          6   O 14 29
+     A            VB2C6          6   O 15 29
+     A            VB2C5          6   O 16 29
+     A            VB2C4          6   O 17 29
+     A            VB2C3          6   O 18 29
+     A            VB2C2          6   O 19 29
+     A            VB2C1          6   O 20 29
+     A*  VERTICAL BAR #3
+     A            VB3C16         6   O  5 45
+     A            VB3C15         6   O  6 45
+     A            VB3C14         6   O  7 45
+     A            VB3C13         6   O  8 45
+     A            VB3C12         6   O  9 45
+     A            VB3C11         6   O 10 45
+     A            VB3C10         6   O 11 45
+     A            VB3C9          6   O 12 45
+     A            VB3C8          6   O 13 45
+     A            VB3C7          6   O 14 45
+     A            VB3C6          6   O 15 45
+     A            VB3C5          6   O 16 45
+     A            VB3C4          6   O 17 45
+     A            VB3C3          6   O 18 45
+     A            VB3C2          6   O 19 45
+     A            VB3C1          6   O 20 45
+     A*  VERTICAL BAR #4
+     A            VB4C16         6   O  5 61
+     A            VB4C15         6   O  6 61
+     A            VB4C14         6   O  7 61
+     A            VB4C13         6   O  8 61
+     A            VB4C12         6   O  9 61
+     A            VB4C11         6   O 10 61
+     A            VB4C10         6   O 11 61
+     A            VB4C9          6   O 12 61
+     A            VB4C8          6   O 13 61
+     A            VB4C7          6   O 14 61
+     A            VB4C6          6   O 15 61
+     A            VB4C5          6   O 16 61
+     A            VB4C4          6   O 17 61
+     A            VB4C3          6   O 18 61
+     A            VB4C2          6   O 19 61
+     A            VB4C1          6   O 20 61
+     A*  HORIZONTAL LINE INFORMATION
+     A            DATE1          4Y 0O 21 15EDTWRD('0 /  ')
+     A            B1AMT          7  0O 22 13EDTCDE(4)
+     A            DATE2          4Y 0O 21 30EDTWRD('0 /  ')
+     A            B2AMT          7  0O 22 28EDTCDE(4)
+     A            DATE3          4Y 0O 21 46EDTWRD('0 /  ')
+     A            B3AMT          7  0O 22 44EDTCDE(4)
+     A            DATE4          4Y 0O 21 62EDTWRD('0 /  ')
+     A            B4AMT          7  0O 22 60EDTCDE(4)
+     A*
+     A                                 24  2'F3=Exit   F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 24 26'F17=Horizontal Bar Chart'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R HRZBAR
+     A                                      CF15
+     A N63                                  ROLLUP
+     A N64                                  ROLLDOWN
+     A                                  1 29'Customer Sales Summary'
+     A                                      DSPATR(HI)
+     A                                  1 64'HORIZONTAL'
+     A                                  3  3'Customer:'
+     A                                      COLOR(BLU)
+     A            CUST#     R        O  3 13REFFLD(CUST# CUSTMAST)
+     A                                      ALIAS(CUSTOMER_NUMBER)
+     A                                      EDTCDE(4)
+     A            NAME      R        O  3 22REFFLD(NAME CUSTMAST)
+     A                                      ALIAS(CUSTOMER_NAME)
+     A*  VERTICAL LINE INFORMATION
+     A            B4AMT          7  0O  6  1EDTCDE(4)
+     A            DATE4          4Y 0O  7  3EDTWRD('0 /  ')
+     A            B3AMT          7  0O 10  1EDTCDE(4)
+     A            DATE3          4Y 0O 11  3EDTWRD('0 /  ')
+     A            B2AMT          7  0O 14  1EDTCDE(4)
+     A            DATE2          4Y 0O 15  3EDTWRD('0 /  ')
+     A            B1AMT          7  0O 18  1EDTCDE(4)
+     A            DATE1          4Y 0O 19  3EDTWRD('0 /  ')
+     A*  HORIZONTAL BAR #4
+     A            HB4C1         70A  O  6  9DSPATR(RI)
+     A            HB4C2         70A  O  7  9DSPATR(RI)
+     A*  HORIZONTAL BAR #3
+     A            HB3C1         70A  O 10  9DSPATR(RI)
+     A            HB3C2         70A  O 11  9DSPATR(RI)
+     A*  HORIZONTAL BAR #2
+     A            HB2C1         70A  O 14  9DSPATR(RI)
+     A            HB2C2         70A  O 15  9DSPATR(RI)
+     A*  HORIZONTAL BAR #1
+     A            HB1C1         70A  O 18  9DSPATR(RI)
+     A            HB1C2         70A  O 19  9DSPATR(RI)
+     A*  HORIZONTAL LINE INFORMATION
+     A                                 20 25'|'
+     A                                 20 43'|'
+     A                                 20 60'|'
+     A                                 20 78'|'
+     A                                 21  8'0'
+     A            AMT1           7Y 0O 21 19EDTCDE(4)
+     A            AMT2           7Y 0O 21 37EDTCDE(4)
+     A            AMT3           7Y 0O 21 54EDTCDE(4)
+     A            AMT4           7Y 0O 21 72EDTCDE(4)
+     A                                 23  2'F3=Exit   F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 23 26'F15=Vertical Bar Chart'
+     A                                      COLOR(BLU)

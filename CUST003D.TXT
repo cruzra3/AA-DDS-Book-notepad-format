@@ -1,0 +1,99 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(CUSTMAST)
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+      *-------------------------------------------------------------------------
+     A          R SELECT
+     A                                      BLINK
+     A                                      KEEP
+     A                                  1 33'Customer Search'
+     A                                      DSPATR(HI)
+     A                                  3  2'Type part of customer name and pre-
+     A                                      ss enter.'
+     A                                      COLOR(BLU)
+     A                                  6 11'Customer Name:'
+     A            SRCHNM        30A  B  6 27
+     A  70                                  ERRMSG('No customers found that mat-
+     A                                      ch search criteria.' 70)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R SFL01                     SFL
+     A            CUSNBR    R        H      REFFLD(CUST#)
+     A            OPTION         1A  B  6  8VALUES(' ' 'X')
+     A            NAME      R        O  6 14
+     A            STATE     R        O  6 52
+      *-------------------------------------------------------------------------
+     A          R CTL01                     SFLCTL(SFL01)
+     A                                      SFLSIZ(0032)
+     A                                      SFLPAG(0016)
+     A  60                                  SFLDSPCTL
+     A  61                                  SFLDSP
+     A N60                                  SFLCLR
+     A  62                                  SFLEND(*MORE)
+     A N62                                  ROLLUP
+     A                                      OVERLAY
+     A            DSPREC         4S 0H      SFLRCDNBR
+     A                                  1 33'Customer Search'
+     A                                      DSPATR(HI)
+     A                                  3 11'Search Value:'
+     A            SRCHNM        30A  O  3 26
+     A                                  5  7'(X)'
+     A                                      DSPATR(UL)
+     A                                  5 14'Customer Name                 '
+     A                                      DSPATR(UL)
+     A                                  5 51'State'
+     A                                      DSPATR(UL)
+      *-------------------------------------------------------------------------
+     A          R BTM01
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R DETAIL
+     A                                      BLINK
+     A                                      KEEP
+     A                                  1 33'Customer Search'
+     A                                      DSPATR(HI)
+     A                                  3  2'Customer Number:'
+     A            CUSNBR    R        O  3 20REFFLD(CUST#)
+     A                                  5  2'-----------------------------------
+     A                                      ------------------------------------
+     A                                      --------'
+     A                                  7 11'Name:'
+     A            NAME      R        O  7 22
+     A                                  8 11'Address:'
+     A            ADDR1     R        O  8 22
+     A            ADDR2     R        O  9 22
+     A                                 10 11'City:'
+     A            CITY      R        O 10 22
+     A                                 11 11'State:'
+     A            STATE     R        O 11 22
+     A                                 12 11'Zip code:'
+     A            ZIP5      R        O 12 22EDTCDE(4)
+     A                                 12 28'-'
+     A            ZIP4      R        O 12 30EDTCDE(4)
+     A                                 14 11'Phone:'
+     A                                 14 22'('
+     A            VOICEA    R        O 14 24EDTCDE(4)
+     A                                 14 28')'
+     A            VOICEB    R        O 14 30EDTCDE(4)
+     A                                 14 34'-'
+     A            VOICEC    R        O 14 36EDTCDE(4)
+     A                                 15 11'Fax:'
+     A                                 15 22'('
+     A            FAXA      R        O 15 24EDTCDE(4)
+     A                                 15 28')'
+     A            FAXB      R        O 15 30EDTCDE(4)
+     A                                 15 34'-'
+     A            FAXC      R        O 15 36EDTCDE(4)
+     A                                 16 11'Contact:'
+     A            CONTCT    R        O 16 22
+     A                                 17 11'Extension:'
+     A            EXTN      R        O 17 22
+     A                                 23  2'F3=Exit   F12=Cancel'
+     A                                      COLOR(BLU)

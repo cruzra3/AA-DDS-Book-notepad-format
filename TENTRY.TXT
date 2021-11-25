@@ -1,0 +1,49 @@
+      *------------------------------------------------------------------*
+      * TENTRY   - SHOW WHAT HAPPENS WITH DATA TYPES FOR FIELD ENTRY     *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    03  -  End of Program.                                        *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FTENTRYD CF  E                    WORKSTN
+     C/EJECT
+      *
+      *   Mainline
+      *
+     C           *IN03     DOUEQ*ON                        Stay until exit
+      *
+      *   Load input to output field
+     C           *IN20     IFEQ *OFF                       CHARACTER
+     C                     MOVE XCHRO     XCHRO            X type -output
+     C                     MOVE ACHRI     ACHRO            A type -output
+     C                     MOVE NCHRI     NCHRO            N type -output
+     C                     MOVE ICHRI     ICHRO            I type -output
+     C                     MOVE DCHRI     DCHRO            D type -output
+     C                     MOVE MCHRI     MCHRO            M type -output
+     C                     EXFMTFMT1
+     C                     ELSE
+     C                     Z-ADDNNUMI     NNUMO            N type -output
+     C                     Z-ADDSNUMI     SNUMO            S type -output
+     C                     Z-ADDYNUMI     YNUMO            Y type -output
+     C                     Z-ADDYNE4I     YNE4O                   -edtcde4
+     C                     Z-ADDINUMI     INUMO            I type -output
+     C                     Z-ADDDNUMI     DNUMO            D type -output
+     C************         Z-ADDFNUMI     FNUMO            F type -output
+     C************         Z-ADDFNF4I     FNF4O                   -FIXDEC
+     C************         Z-ADDFNDPI     FNDPO                   -DOUBLE
+     C                     EXFMTFMT2
+     C                     ENDIF
+      *
+     C           *IN10     IFEQ *ON
+     C           *IN20     IFEQ *ON
+     C                     MOVE *OFF      *IN20
+     C                     ELSE
+     C                     MOVE *ON       *IN20
+     C                     ENDIF
+     C                     ENDIF
+      *
+     C                     ENDDO
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN

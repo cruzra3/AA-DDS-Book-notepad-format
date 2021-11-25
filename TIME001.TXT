@@ -1,0 +1,61 @@
+      *------------------------------------------------------------------*
+      * TIME001  - Time-out example using data queues.                   *
+      *------------------------------------------------------------------*
+     FTIME001DCF  E                    WORKSTN      KINFDS DSPINF
+     IDSPINF      DS
+     I                                      369 369 ##AID
+      *
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+      *
+      *   Stay in program until Exit is requested
+      *
+     C           EXIT      DOUEQYES
+      *
+     C                     WRITEFMT1
+     C                     CALL 'QRCVDTAQ'
+     C                     PARM           INQUE
+     C                     PARM           QUELIB
+     C                     PARM           INLEN
+     C                     PARM           INDATA 80
+     C                     PARM           WAITTM
+      *
+     C           INLEN     IFEQ 0
+     C                     ADD  1         COUNT
+     C                     ELSE
+      *
+     C                     READ FMT1                     90
+     C                     SELEC
+     C           ##AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           ##AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C                     OTHER                           Enter Key
+     C                     Z-ADD0         COUNT
+     C                     ENDSL
+      *
+     C                     ENDIF
+      *
+     C                     ENDDO
+      *
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      /EJECT
+      *
+      *  Program Initialization
+      *
+     C           *INZSR    BEGSR
+      *
+      *  Initialize Program variables
+      *
+     C                     MOVE NO        EXIT    1        Exit flag
+      *
+     C                     MOVEL'TIME001D'INQUE  10 P      Input queue
+     C                     MOVEL'*LIBL'   QUELIB 10 P      Queue library
+     C                     Z-ADD0         INLEN   50       Length of data
+     C                     Z-ADD10        WAITTM  50       Wait time
+      *
+     C                     ENDSR

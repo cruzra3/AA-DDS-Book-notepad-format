@@ -1,0 +1,294 @@
+      *------------------------------------------------------------------*
+      * GDDM001  - Graphics Example                                      *
+      *------------------------------------------------------------------*
+     FGDDM001DCF  E                    WORKSTN      KINFDS DSPINF
+     E                    AX          8  5 0             X coordinates
+     E                    AY          8  5 0             Y coordinates
+     IDSPINF      DS
+     I                                      369 369 ##AID
+      *
+     I           IDS
+     I                                    B   1   40GDDMP4
+      *
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+      *
+      *   Stay in program until Exit is requested
+      *
+     C           EXIT      DOUEQYES
+      *
+     C                     EXFMTFMT01
+     C                     SELEC
+     C           ##AID     WHEQ ##F3
+     C                     MOVE YES       EXIT
+     C           ##AID     WHEQ ##F12
+     C                     MOVE YES       EXIT
+     C                     ENDSL
+      *
+     C                     ENDDO
+      *
+      *  Shut down graphics
+      *
+     C                     CALL 'GDDM'                     Init
+     C                     PARM 'FSTERM'  GDDMP1
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      /EJECT
+      *
+      *  Program Initialization
+      *
+     C           *INZSR    BEGSR
+      *
+      *  Initialize Program variables
+      *
+     C                     MOVE NO        EXIT    1        Exit flag
+      *
+     C                     MOVE *BLANKS   GDDMP1  8        GDDM Parm #1
+     C                     Z-ADD0         GDDMP2  51
+     C                     Z-ADD0         GDDMP3  51
+      *
+      *  Initialize GDDM graphics
+      *
+     C                     CALL 'GDDM'                     Init
+     C                     PARM 'FSINIT'  GDDMP1
+      *
+      *  Draw inner box around text
+      *
+     C                     CALL 'GDDM'                     Set line width
+     C                     PARM 'GSLW'    GDDMP1
+     C                     PARM 4         GDDMP4
+      *
+     C                     CALL 'GDDM'                     Set color
+     C                     PARM 'GSCOL'   GDDMP1
+     C                     PARM 10        GDDMP4           Orange
+      *
+     C                     CALL 'GDDM'                     Move to up-left
+     C                     PARM 'GSMOVE'  GDDMP1
+     C                     PARM 33.6      GDDMP2
+     C                     PARM 62.8      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw ul-ur line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 62.5      GDDMP2
+     C                     PARM 62.8      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw ur-lr line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 62.5      GDDMP2
+     C                     PARM 41.8      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw lr-ll line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 33.6      GDDMP2
+     C                     PARM 41.8      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw ll-ul line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 33.6      GDDMP2
+     C                     PARM 62.8      GDDMP3
+      *
+      *  Draw outer box around test
+      *
+     C                     CALL 'GDDM'                     Move to up-left
+     C                     PARM 'GSMOVE'  GDDMP1
+     C                     PARM 33.1      GDDMP2
+     C                     PARM 63.4      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw ul-ur line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 63.0      GDDMP2
+     C                     PARM 63.4      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw ur-lr line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 63.0      GDDMP2
+     C                     PARM 41.2      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw lr-ll line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 33.1      GDDMP2
+     C                     PARM 41.2      GDDMP3
+      *
+     C                     CALL 'GDDM'                     Draw ll-ul line
+     C                     PARM 'GSLINE'  GDDMP1
+     C                     PARM 33.1      GDDMP2
+     C                     PARM 63.4      GDDMP3
+      *
+      *  Draw symbols
+      *
+     C                     CALL 'GDDM'                     Set line width
+     C                     PARM 'GSLW'    GDDMP1
+     C                     PARM 2         GDDMP4
+      *     Upper left hard corner symbol
+     C                     CALL 'GDDM'                     Set color
+     C                     PARM 'GSCOL'   GDDMP1
+     C                     PARM 1         GDDMP4           Blue
+      *
+     C                     CALL 'GDDM'                     Lock point
+     C                     PARM 'GSMOVE'  GDDMP1
+     C                     PARM 5         GDDMP2
+     C                     PARM 70        GDDMP3
+      *
+     C                     CALL 'GDDM'                     Shaded area
+     C                     PARM 'GSAREA'  GDDMP1
+     C                     PARM 1         GDDMP4
+      *
+     C                     Z-ADD18        AX,1             Set coordinates
+     C                     Z-ADD82        AY,1
+     C                     Z-ADD5         AX,2
+     C                     Z-ADD94        AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     Z-ADD18        AX,1             Set coordinates
+     C                     Z-ADD82        AY,1
+     C                     Z-ADD29        AX,2
+     C                     Z-ADD94        AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     Z-ADD18        AX,1             Set coordinates
+     C                     Z-ADD82        AY,1
+     C                     Z-ADD29        AX,2
+     C                     Z-ADD70        AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     Z-ADD18        AX,1             Set coordinates
+     C                     Z-ADD82        AY,1
+     C                     Z-ADD5         AX,2
+     C                     Z-ADD70        AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     CALL 'GDDM'                     End area
+     C                     PARM 'GSENDA'  GDDMP1
+      *     Upper right hard corner symbol
+     C                     CALL 'GDDM'                     Set color
+     C                     PARM 'GSCOL'   GDDMP1
+     C                     PARM 2         GDDMP4           Red
+      *
+     C                     CALL 'GDDM'                     Lock point
+     C                     PARM 'GSMOVE'  GDDMP1
+     C                     PARM 78        GDDMP2
+     C                     PARM 78        GDDMP3
+      *
+     C                     CALL 'GDDM'                     Shaded area
+     C                     PARM 'GSAREA'  GDDMP1
+     C                     PARM 1         GDDMP4
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSARC'   GDDMP1
+     C                     PARM 85        XCOORD  50
+     C                     PARM 85        YCOORD  50
+     C                     PARM 360       ANGLE   50
+      *
+     C                     CALL 'GDDM'                     End area
+     C                     PARM 'GSENDA'  GDDMP1
+      *     Lower right hard corner symbol
+     C                     CALL 'GDDM'                     Set color
+     C                     PARM 'GSCOL'   GDDMP1
+     C                     PARM 3         GDDMP4           Pink
+      *
+     C                     CALL 'GDDM'                     Lock point
+     C                     PARM 'GSMOVE'  GDDMP1
+     C                     PARM 71        GDDMP2
+     C                     PARM 6         GDDMP3
+      *
+     C                     CALL 'GDDM'                     Shaded area
+     C                     PARM 'GSAREA'  GDDMP1
+     C                     PARM 1         GDDMP4
+      *
+     C                     Z-ADD82        AX,1             Set coordinates
+     C                     Z-ADD18        AY,1
+     C                     Z-ADD71        AX,2
+     C                     Z-ADD30        AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     Z-ADD82        AX,1             Set coordinates
+     C                     Z-ADD18        AY,1
+     C                     Z-ADD95        AX,2
+     C                     Z-ADD30        AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     Z-ADD82        AX,1             Set coordinates
+     C                     Z-ADD18        AY,1
+     C                     Z-ADD95        AX,2
+     C                     Z-ADD6         AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     Z-ADD82        AX,1             Set coordinates
+     C                     Z-ADD18        AY,1
+     C                     Z-ADD71        AX,2
+     C                     Z-ADD6         AY,2
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSPFLT'  GDDMP1
+     C                     PARM 2         GDDMP4
+     C                     PARM           AX
+     C                     PARM           AY
+      *
+     C                     CALL 'GDDM'                     End area
+     C                     PARM 'GSENDA'  GDDMP1
+      *     Lower left hard corner symbol
+     C                     CALL 'GDDM'                     Set color
+     C                     PARM 'GSCOL'   GDDMP1
+     C                     PARM 6         GDDMP4           Yellow
+      *
+     C                     CALL 'GDDM'                     Lock point
+     C                     PARM 'GSMOVE'  GDDMP1
+     C                     PARM 8         GDDMP2
+     C                     PARM 8         GDDMP3
+      *
+     C                     CALL 'GDDM'                     Shaded area
+     C                     PARM 'GSAREA'  GDDMP1
+     C                     PARM 1         GDDMP4
+      *
+     C                     CALL 'GDDM'                     Draw symbol
+     C                     PARM 'GSARC'   GDDMP1
+     C                     PARM 15        XCOORD  50
+     C                     PARM 15        YCOORD  50
+     C                     PARM 360       ANGLE   50
+      *
+     C                     CALL 'GDDM'                     End area
+     C                     PARM 'GSENDA'  GDDMP1
+      *
+      *     Display the image
+     C                     CALL 'GDDM'
+     C                     PARM 'FSFRCE'  GDDMP1
+      *
+     C                     ENDSR

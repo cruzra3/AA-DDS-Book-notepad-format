@@ -1,0 +1,183 @@
+      *------------------------------------------------------------------*
+      * CUST003  - Customer Master Name Search                           *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    60  -  Display Subfile Control Format                         *
+      *   N60  -  Clear subfile                                          *
+      *    61  -  Display Subfile Format                                 *
+      *    62  -  Subfile End                                            *
+      *                                                                  *
+      *    70  -  No records found that meet search criteria             *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FCUST003DCF  E                    WORKSTN      KINFDS DSPINF
+     F                                        RRN1  KSFILE SFL01
+     FCUSTMASTIF  E           K        DISK
+     FCUSTMSL1IF  E           K        DISK
+     F            CUSTFMT                           KRENAMEFMTL1
+     IDSPINF      DS
+     I                                      369 369 @@AID
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     I              X'F5'                 C         ##RUP
+     I              'ABCDEFGHIJKLMNOPQRST-C         UP
+     I              'UVWXYZ'
+     I              'abcdefghijklmnopqrst-C         LO
+     I              'uvwxyz'
+     C/EJECT
+      *
+      *   Mainline
+      *
+     C           EXIT      DOUEQYES                        Stay until exit
+      *
+     C                     EXFMTSELECT
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C                     OTHER                           Enter key
+     C                     EXSR @@SRCH
+     C                     MOVE NO        CANCEL           Turn off backup
+     C                     ENDSL
+      *
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+     C/EJECT
+      *
+      *  Perform search request
+      *
+     C           @@SRCH    BEGSR
+      *
+      *  Clear subfile
+      *
+     C                     MOVE NO        EXIT    1
+     C                     MOVE NO        CANCEL  1
+     C                     MOVE *OFF      *IN60
+     C                     MOVE *OFF      *IN61
+     C                     MOVE *OFF      *IN62
+     C                     Z-ADD0         RRN1
+     C                     WRITECTL01
+     C                     MOVE *ON       *IN60
+     C                     MOVE *ON       *IN61
+      *
+      *  Get first search record...set search test values
+      *
+     C           SRCHNM    SETLLCUSTMSL1                   Position file
+     C           SRCHNM    CAT  X'FF':0   TSTSCH 30        Set cutoff
+     C                     READ CUSTMSL1                 62
+     C           *IN62     IFEQ *OFF                       Got record
+     C           LO:UP     XLATENAME      INNAME           Translate name
+     C           INNAME    IFGT TSTSCH                     Beyond search
+     C                     MOVE *ON       *IN62
+     C                     ENDIF
+     C                     ENDIF
+      *
+     C           *IN62     IFEQ *OFF                       Good record
+     C                     Z-ADDCUST#     SVCUST
+     C                     EXSR @@PAGE                     Load one page
+      *
+      *  Display search results and process user request
+      *
+     C           EXIT      DOWEQNO                         Until exit
+     C           CANCEL    ANDEQNO
+     C                     WRITEBTM01
+     C                     EXFMTCTL01                      Show selection
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       CANCEL
+     C           @@AID     WHEQ ##RUP                      Roll up rqs
+     C                     EXSR @@PAGE
+      *
+     C                     OTHER                           Enter key
+     C                     READCSFL01                    90 Get changed
+     C           *IN90     DOWEQ*OFF
+     C           EXIT      ANDEQNO
+     C           CANCEL    ANDEQNO
+      *
+     C           OPTION    IFEQ 'X'                        Selection made
+     C                     MOVE *BLANKS   OPTION
+     C                     UPDATSFL01                      Clear option
+     C                     EXSR @@CUST                     Display cust#
+     C                     ENDIF
+      *
+     C           EXIT      IFEQ NO                         No exit from
+     C           CANCEL    ANDEQNO                          display
+     C                     READCSFL01                    90 Get changed
+     C                     ENDIF
+      *
+     C                     ENDDO
+     C                     MOVE NO        CANCEL           Turn off backup
+      *
+     C                     ENDSL
+      *
+     C                     ENDDO                           End Exit loop
+      *
+     C                     ELSE                            No good records
+     C                     MOVE *ON       *IN70
+     C                     ENDIF                           End *IN62= test
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Load one page of data
+      *
+     C           @@PAGE    BEGSR
+      *
+      *  Restore RRN values
+      *
+     C                     Z-ADD0         COUNT   30       # load in SFL
+     C                     Z-ADDSVRRN1    RRN1    40       Reset RRN
+     C           RRN1      ADD  1         DSPREC  40       Display RRN#
+      *
+     C           SVCUST    CHAINCUSTMAST             90    Reget cust inf
+     C           *IN62     DOWEQ*OFF
+     C           COUNT     ANDLT16
+      *
+     C                     Z-ADDCUST#     CUSNBR
+     C                     ADD  1         RRN1
+     C                     ADD  1         COUNT
+     C                     WRITESFL01
+      *
+     C                     READ CUSTMSL1                 62 Next record
+     C           *IN62     IFEQ *OFF                       Got record
+     C           LO:UP     XLATENAME      INNAME 30        Translate name
+     C           INNAME    IFGT TSTSCH                     Beyond search
+     C                     MOVE *ON       *IN62
+     C                     ENDIF
+     C                     ENDIF
+     C                     ENDDO
+      *
+      *  Save RRN values for next page
+      *
+     C                     Z-ADDCUST#     SVCUST  70       Last cust read
+     C                     Z-ADDRRN1      SVRRN1  40       Last RRN
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Show customer data
+      *
+     C           @@CUST    BEGSR
+      *
+     C           CUSNBR    CHAINCUSTMAST             90    Get record
+      *
+     C                     EXFMTDETAIL
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       CANCEL
+     C                     ENDSL
+      *
+     C                     ENDSR

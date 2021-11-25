@@ -1,0 +1,61 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      PRINT
+     A                                      ERRSFL
+     A                                      CA03(03 'End')
+     A                                      CA12(12 'Cancel')
+      *-------------------------------------------------------------------------
+     A          R SELECT
+     A                                      BLINK
+     A                                      KEEP
+     A            MSGDTA        10   P
+     A                                  1 33'Backup Libraries'
+     A                                      DSPATR(HI)
+     A                                  3  2'Enter library names to save:'
+     A                                      COLOR(BLU)
+     A                                  6 11'Library Names:'
+     A            LIB1          10   I  6 34
+     A  71                                  ERRMSGID(BUP0001 BOOKMSGF 71 +
+     A                                      &MSGDTA)
+     A            LIB2          10   I  7 34
+     A  72                                  ERRMSGID(BUP0001 BOOKMSGF 72 +
+     A                                      &MSGDTA)
+     A            LIB3          10   I  8 34
+     A  73                                  ERRMSGID(BUP0001 BOOKMSGF 73 +
+     A                                      &MSGDTA)
+     A            LIB4          10   I  9 34
+     A  74                                  ERRMSGID(BUP0001 BOOKMSGF 74 +
+     A                                      &MSGDTA)
+     A            LIB5          10   I 10 34
+     A  75                                  ERRMSGID(BUP0001 BOOKMSGF 75 +
+     A                                      &MSGDTA)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R INPROG
+     A                                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                      FRCDTA
+     A                                      LOCK
+     A  41                              6 46'In progress...'
+     A                                      COLOR(WHT)  DSPATR(BL)
+     A  42                              7 46'In progress...'
+     A                                      COLOR(WHT)  DSPATR(BL)
+     A  43                              8 46'In progress...'
+     A                                      COLOR(WHT)  DSPATR(BL)
+     A  44                              9 46'In progress...'
+     A                                      COLOR(WHT)  DSPATR(BL)
+     A  45                             10 46'In progress...'
+     A                                      COLOR(WHT)  DSPATR(BL)
+      *-------------------------------------------------------------------------
+     A          R CLEAR
+     A                                      OVERLAY
+     A                                      CLRL(*NO)
+     A                                      FRCDTA
+     A                                      LOCK
+     A                                  6 46'              '
+     A                                  7 46'              '
+     A                                  8 46'              '
+     A                                  9 46'              '
+     A                                 10 46'              '

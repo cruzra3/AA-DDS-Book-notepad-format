@@ -1,0 +1,90 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(CUSTMAST)
+     A                                      PRINT
+     A                                      CA03(03 'End')
+     A                                      CA12(12 'Cancel')
+      *-------------------------------------------------------------------------
+     A          R SELECT
+     A                                      INDTXT(41 'Inquiry/Maintenance swit-
+     A                                      ch')
+     A                                      BLINK
+     A                                      KEEP
+     A  41                                  CF05(05 'View')
+     A N41                                  CF06(06 'Add')
+     A N41                                  CF07(07 'Change')
+     A N41                                  CF08(08 'Delete')
+     A N41                              1 33'Update Customer'
+     A                                      DSPATR(HI)
+     A  41                              1 33'Customer Inquiry'
+     A                                      DSPATR(HI)
+     A                                  3  2'Type customer number, press a func-
+     A                                      tion key.'
+     A                                      COLOR(BLU)
+     A                                  6 11'Customer Number:'
+     A            CUSNBR    R        B  6 34REFFLD(CUST#)
+     A  70                                  ERRMSG('Must press function key' 70)
+     A  71                                  ERRMSG('Customer number not on file-
+     A                                      .' 71)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A N41                             23 12'F6=Add   F7=Change   F8=Delete'
+     A                                      COLOR(BLU)
+     A  41                             23 12'F5=View'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R DETAIL
+     A                                      INDTXT(41 'Inquiry/Maintenance swit-
+     A                                      ch')
+     A                                      BLINK
+     A                                      KEEP
+     A                                      RTNDTA
+     A N41                              1 33'Update Customer'
+     A                                      DSPATR(HI)
+     A  41                              1 33'Customer Inquiry'
+     A                                      DSPATR(HI)
+     A                                  3  2'Customer Number:'
+     A            CUSNBR    R        O  3 20REFFLD(CUST#)
+     A                                  3 41'Operation:'
+     A            OPER          12   O  3 52
+     A                                  5  2'-----------------------------------
+     A                                      ------------------------------------
+     A                                      --------'
+     A                                  7 11'Name:'
+     A            NAME      R        B  7 22
+     A                                  8 11'Address:'
+     A            ADDR1     R        B  8 22
+     A            ADDR2     R        B  9 22
+     A                                 10 11'City:'
+     A            CITY      R        B 10 22
+     A                                 11 11'State:'
+     A            STATE     R        B 11 22
+     A                                 12 11'Zip code:'
+     A            ZIP5      R        B 12 22EDTCDE(4)
+     A                                 12 28'-'
+     A            ZIP4      R        B 12 30EDTCDE(4)
+     A                                 14 11'Phone:'
+     A                                 14 22'('
+     A            VOICEA    R        B 14 24EDTCDE(4)
+     A                                 14 28')'
+     A            VOICEB    R        B 14 30EDTCDE(4)
+     A                                 14 34'-'
+     A            VOICEC    R        B 14 36EDTCDE(4)
+     A                                 15 11'Fax:'
+     A                                 15 22'('
+     A            FAXA      R        B 15 24EDTCDE(4)
+     A                                 15 28')'
+     A            FAXB      R        B 15 30EDTCDE(4)
+     A                                 15 34'-'
+     A            FAXC      R        B 15 36EDTCDE(4)
+     A                                 16 11'Contact:'
+     A            CONTCT    R        B 16 22
+     A                                 17 11'Extension:'
+     A            EXTN      R        B 17 22
+     A                                 23  2'F3=Exit   F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R INQFMT
+     A                                      OVERLAY
+     A                                      PROTECT

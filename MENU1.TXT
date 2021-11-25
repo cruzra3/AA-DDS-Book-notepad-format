@@ -1,0 +1,67 @@
+     PGM
+
+        DCL  &cutoff   *CHAR  8   VALUE( '''yyyymm''' )
+        DCL  &date     *CHAR  8   VALUE( 'yyyymm01' )
+        DCL  &dummy_date *CHAR  8
+        DCL  &hex      *CHAR  1   VALUE( X'2A' )
+        DCL  &month_x  *CHAR  2
+        DCL  &year_x   *CHAR  4
+
+        DCLF menu1d
+
+     LOOP:
+        SNDRCVF  RCDFMT( fmt01 )
+        IF ( &in03  *OR  &in12 )  GOTO exit
+
+        /*                                                                 +
+         | Validate date.                                                  +
+         | Begin by copying the month and year numbers to character        +
+         | variables.  Then concatenate them to make up a date with a day  +
+         | number equal to 01.  Finally, use the CVTDAT command to ensure  +
+         | that the date is valid.                                         +
+        */
+        CHGVAR  &month_x  &month
+        CHGVAR  &year_x   &year
+        CHGVAR  &date  ( &year_x || &month_x || '01' )
+        CVTDAT  DATE( &date )                                              +
+                TOVAR( &dummy_date )                                       +
+                FROMFMT( *YYMD )                                           +
+                TOFMT( *YYMD )                                             +
+                TOSEP( *NONE )
+        MONMSG  cpf0555  EXEC( DO )
+           CHGVAR  &in70  '1'
+           GOTO  LOOP
+        ENDDO
+        /*  Set copies if not entered */
+        IF ( &copies <= 0 )  CHGVAR  &copies  1
+
+        /*  Set cutoff date variable  */
+        CHGVAR  %SST( &cutoff 2 4 )  &year
+        CHGVAR  %SST( &cutoff 6 2 )  &month
+
+        /*  Print report selected  */
+        OVRPRTF  qpqxprtf                                                  +
+                 COPIES( &copies )                                         +
+                 OUTQ( prt05 )                                             +
+                 PRTTXT( *BLANK )
+
+        IF ( &option = 1 )  DO
+           CALL  program1  &cutoff
+        ENDDO
+
+        ELSE IF ( &option = 2 )  DO
+           CALL  program2  &cutoff
+        ENDDO
+
+        ELSE IF ( &option = 3 )  DO
+           CALL  program3  &cutoff
+        ENDDO
+
+        ELSE IF ( &option = 4 )  DO
+           CALL  program4  &cutoff
+        ENDDO
+
+        GOTO  loop
+
+     EXIT:
+     ENDPGM

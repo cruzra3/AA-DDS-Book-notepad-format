@@ -1,0 +1,7 @@
+     A          R CARDFMT
+     A            EMP#           3P 0       ALIAS(EMPLOYEE_NUMBER)
+     A            DATE           6S 0       ALIAS(DATE_WORKED)
+     A            SHIFT          1A         ALIAS(WORK_SHIFT)
+     A            STRTIM         4S 0       ALIAS(STARTING_TIME)
+     A            ENDTIM         4S 0       ALIAS(ENDING_TIME)
+     A            PROJ#          5P 0       ALIAS(PROJECT_NUMBER)

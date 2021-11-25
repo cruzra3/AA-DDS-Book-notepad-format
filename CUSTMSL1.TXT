@@ -1,0 +1,5 @@
+     A                                      ALTSEQ(QSYSTRNTBL)
+     A          R CUSTFMT                   PFILE(CUSTMAST)
+     A          K NAME
+     A          K STATE
+     A          K CUST#

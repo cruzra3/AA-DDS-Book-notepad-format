@@ -1,0 +1,682 @@
+      *------------------------------------------------------------------*
+      * CUST005  - Customer Sales Summary Inquiry                        *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    60  -  Display Subfile Control Format                         *
+      *   N60  -  Clear subfile                                          *
+      *    61  -  Display Subfile Format                                 *
+      *    62  -  Subfile End                                            *
+      *                                                                  *
+      *    70  -  No data for customer                                   *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FCUST005DCF  E                    WORKSTN      KINFDS DSPINF
+     F                                        RRN1  KSFILE SFL01
+     FCUSTMASTIF  E           K        DISK
+     FSLSSUMM IF  E           K        DISK
+     E                    VB1        16  6               Vertical Bar #1
+     E                    VB2        16  6               Vertical Bar #2
+     E                    VB3        16  6               Vertical Bar #3
+     E                    VB4        16  6               Vertical Bar #4
+     E                    AMT         4  7 0             Amount Array
+     E                    WAM         4  8 1             Amount Work Array
+     E                    DTE         4  4 0             Bar dates
+     E                    BAM         4  7 0             Bar amount values
+     IDSPINF      DS
+     I                                      369 369 @@AID
+     I                                    B 378 3790@@SFL#
+      *
+     I            DS
+     I                                        1  160DTE
+     I                                        1   40DATE1
+     I                                        5   80DATE2
+     I                                        9  120DATE3
+     I                                       13  160DATE4
+      *
+     I            DS
+     I                                        1  280AMT
+     I                                        1   70AMT1
+     I                                        8  140AMT2
+     I                                       15  210AMT3
+     I                                       22  280AMT4
+      *
+     I            DS
+     I                                        1  280BAM
+     I                                        1   70B1AMT
+     I                                        8  140B2AMT
+     I                                       15  210B3AMT
+     I                                       22  280B4AMT
+      *
+     I            DS
+     I                                        1  96 VB1
+     I                                        1   6 VB1C1
+     I                                        7  12 VB1C2
+     I                                       13  18 VB1C3
+     I                                       19  24 VB1C4
+     I                                       25  30 VB1C5
+     I                                       31  36 VB1C6
+     I                                       37  42 VB1C7
+     I                                       43  48 VB1C8
+     I                                       49  54 VB1C9
+     I                                       55  60 VB1C10
+     I                                       61  66 VB1C11
+     I                                       67  72 VB1C12
+     I                                       73  78 VB1C13
+     I                                       79  84 VB1C14
+     I                                       85  90 VB1C15
+     I                                       91  96 VB1C16
+      *
+     I            DS
+     I                                        1  96 VB2
+     I                                        1   6 VB2C1
+     I                                        7  12 VB2C2
+     I                                       13  18 VB2C3
+     I                                       19  24 VB2C4
+     I                                       25  30 VB2C5
+     I                                       31  36 VB2C6
+     I                                       37  42 VB2C7
+     I                                       43  48 VB2C8
+     I                                       49  54 VB2C9
+     I                                       55  60 VB2C10
+     I                                       61  66 VB2C11
+     I                                       67  72 VB2C12
+     I                                       73  78 VB2C13
+     I                                       79  84 VB2C14
+     I                                       85  90 VB2C15
+     I                                       91  96 VB2C16
+      *
+     I            DS
+     I                                        1  96 VB3
+     I                                        1   6 VB3C1
+     I                                        7  12 VB3C2
+     I                                       13  18 VB3C3
+     I                                       19  24 VB3C4
+     I                                       25  30 VB3C5
+     I                                       31  36 VB3C6
+     I                                       37  42 VB3C7
+     I                                       43  48 VB3C8
+     I                                       49  54 VB3C9
+     I                                       55  60 VB3C10
+     I                                       61  66 VB3C11
+     I                                       67  72 VB3C12
+     I                                       73  78 VB3C13
+     I                                       79  84 VB3C14
+     I                                       85  90 VB3C15
+     I                                       91  96 VB3C16
+      *
+     I            DS
+     I                                        1  96 VB4
+     I                                        1   6 VB4C1
+     I                                        7  12 VB4C2
+     I                                       13  18 VB4C3
+     I                                       19  24 VB4C4
+     I                                       25  30 VB4C5
+     I                                       31  36 VB4C6
+     I                                       37  42 VB4C7
+     I                                       43  48 VB4C8
+     I                                       49  54 VB4C9
+     I                                       55  60 VB4C10
+     I                                       61  66 VB4C11
+     I                                       67  72 VB4C12
+     I                                       73  78 VB4C13
+     I                                       79  84 VB4C14
+     I                                       85  90 VB4C15
+     I                                       91  96 VB4C16
+      *
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     I              X'B3'                 C         ##F15
+     I              X'B5'                 C         ##F17
+     I              X'F5'                 C         ##RUP
+     I              X'F4'                 C         ##RDN
+     I              X'20'                 C         HEX20
+     I              X'21'                 C         HEX21
+     C/EJECT
+      *
+      *   Mainline
+      *
+     C           EXIT      DOUEQYES                        Stay until exit
+      *
+     C                     EXFMTSELECT
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       EXIT
+     C                     OTHER                           Enter key
+     C                     EXSR @@PROC
+     C                     MOVE NO        CANCEL           Turn off backup
+     C                     ENDSL
+      *
+     C                     ENDDO                           End main loop
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+     C/EJECT
+      *
+      *  Program initialization
+      *
+     C           *INZSR    BEGSR
+      *
+     C           *LIKE     DEFN YEAR      SVYEAR
+     C           *LIKE     DEFN MONTH     SVMNTH
+     C           *LIKE     DEFN YEAR      ##YEAR
+     C           *LIKE     DEFN MONTH     ##MNTH
+      *
+     C                     MOVE *BLANKS   VRTHRZ  1        Vert/Horz flag
+      *
+     C           KEYSLS    KLIST
+     C                     KFLD           CUSNBR
+     C                     KFLD           SVYEAR
+     C                     KFLD           SVMNTH
+      *
+     C           KEYBAR    KLIST
+     C                     KFLD           CUSNBR
+     C                     KFLD           ##YEAR
+     C                     KFLD           ##MNTH
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Load sales summary data, if any
+      *
+     C           @@PROC    BEGSR
+      *
+      *  Clear subfile
+      *
+     C                     MOVE NO        QUIT    1
+     C                     MOVE NO        EXIT    1
+     C                     MOVE NO        CANCEL  1
+     C                     MOVE *OFF      *IN60
+     C                     MOVE *OFF      *IN61
+     C                     MOVE *OFF      *IN62
+     C                     Z-ADD0         RRN1
+     C                     Z-ADD0         SVRRN1
+     C                     WRITECTL01
+     C                     MOVE *ON       *IN60
+     C                     MOVE *ON       *IN61
+      *
+      *  Get record for customer
+      *
+     C           CUSNBR    CHAINSLSSUMM              70
+     C                     Z-ADDYEAR      SVYEAR
+     C                     Z-ADDMONTH     SVMNTH
+      *
+     C           *IN70     IFEQ *OFF                       Good record
+     C           CUSNBR    CHAINCUSTMAST             90    Get cust info
+     C                     EXSR @@PAGE                     Load one page
+      *
+      *  Display summary data and process user request
+      *
+     C           EXIT      DOWEQNO                         Until exit
+     C           CANCEL    ANDEQNO
+     C                     WRITEBTM01
+     C                     EXFMTCTL01                      Show selection
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+      *
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       CANCEL
+      *
+     C           @@AID     WHEQ ##F15                      Vertical bar
+     C           @@AID     OREQ ##F17                      Horizontal bar
+     C           @@SFL#    CHAINSFL01                90    Get date
+     C                     Z-ADDYEAR      ##YEAR           Starting point
+     C                     Z-ADDMONTH     ##MNTH
+     C                     Z-ADD@@SFL#    DSPREC           Remember pos
+      *
+     C           @@AID     WHEQ ##RUP                      Roll up rqs
+     C                     EXSR @@PAGE
+     C                     ENDSL
+      *
+      *   Stay on bar charts if toggling between vertical & horizontal
+      *
+     C           @@AID     DOWEQ##F15
+     C           @@AID     OREQ ##F17
+      *
+     C           @@AID     CASEQ##F15     @@VERT           Vertical bar
+     C           @@AID     CASEQ##F17     @@HORZ           Horizontal bar
+     C                     ENDCS
+      *
+     C                     MOVE NO        QUIT
+     C                     MOVE NO        CANCEL
+      *
+     C                     ENDDO                           End Bar loop
+      *
+     C                     ENDDO                           End Exit loop
+      *
+     C                     ENDIF                           End *IN70 test
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Load one page of data
+      *
+     C           @@PAGE    BEGSR
+      *
+      *  Restore RRN values
+      *
+     C                     Z-ADD0         COUNT   30       # load in SFL
+     C                     Z-ADDSVRRN1    RRN1    40       Reset RRN
+     C           RRN1      ADD  1         DSPREC  40       Display RRN#
+     C           KEYSLS    CHAINSLSSUMM              62    Reposition file
+      *
+     C           *IN62     DOWEQ*OFF
+     C           COUNT     ANDLT16
+      *
+     C                     Z-ADDCUST#     CUSNBR
+     C                     ADD  1         RRN1
+     C                     ADD  1         COUNT
+     C                     WRITESFL01
+      *
+     C           CUSNBR    READESLSSUMM                  62 Next record
+     C                     ENDDO
+      *
+      *  Save RRN values for next page
+      *
+     C                     Z-ADDYEAR      SVYEAR
+     C                     Z-ADDMONTH     SVMNTH
+     C                     Z-ADDRRN1      SVRRN1  40       Last RRN
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Show vertical bar chart
+      *
+     C           @@VERT    BEGSR
+      *
+     C                     MOVE 'V'       VRTHRZ           Vertical flag
+     C                     Z-ADD0         BAM              Clear amounts
+     C                     Z-ADD0         DTE              Clear dates
+     C                     MOVE *OFF      *IN63            Roll up
+     C                     MOVE *OFF      *IN64            Roll down
+      *
+      *  Get four records from starting point indicated
+      *
+     C           KEYBAR    SETLLSLSSUMM
+     C           1         DO   4         IY               Load amounts
+     C           CUSNBR    READESLSSUMM                  90
+     C           *IN90     IFEQ *OFF
+     C                     Z-ADDTOTAMT    BAM,IY    H
+     C                     MOVELMONTH     WRKDTE  4
+     C                     MOVE YEAR      WRKDTE
+     C                     MOVE WRKDTE    DTE,IY
+     C                     ELSE
+     C                     MOVE *ON       *IN63            No roll up
+     C                     LEAVE
+     C                     ENDIF
+     C                     ENDDO
+      *
+      *  Calculate scale of bar
+      *
+     C                     EXSR @@SCAL
+      *
+      *  Calculate and set height of each bar
+      *
+     C                     EXSR @@SETV
+      *
+     C           EXIT      DOUEQYES
+     C           CANCEL    OREQ YES
+     C           QUIT      OREQ YES
+      *
+     C                     EXFMTVRTBAR
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       CANCEL
+     C           @@AID     WHEQ ##F17                      Horizontal
+     C                     MOVELDATE1     ##MNTH           Set starting
+     C                     MOVE DATE1     ##YEAR
+     C                     MOVE YES       QUIT
+     C           @@AID     WHEQ ##RUP                      Roll up
+     C                     EXSR @@BARU
+     C           @@AID     WHEQ ##RDN                      Roll down
+     C                     EXSR @@BARD
+     C                     ENDSL
+      *
+     C                     ENDDO
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Show horizontal bar chart
+      *
+     C           @@HORZ    BEGSR
+      *
+     C                     MOVE 'H'       VRTHRZ           Horizontal flag
+     C                     Z-ADD0         BAM              Clear amounts
+     C                     Z-ADD0         DTE              Clear dates
+     C                     MOVE *OFF      *IN63            Roll up
+     C                     MOVE *OFF      *IN64            Roll down
+      *
+      *  Get four records from starting point indicated
+      *
+     C           KEYBAR    SETLLSLSSUMM
+     C           1         DO   4         IY               Load amounts
+     C           CUSNBR    READESLSSUMM                  90
+     C           *IN90     IFEQ *OFF
+     C                     Z-ADDTOTAMT    BAM,IY    H
+     C                     MOVELMONTH     WRKDTE  4
+     C                     MOVE YEAR      WRKDTE
+     C                     MOVE WRKDTE    DTE,IY
+     C                     ELSE
+     C                     MOVE *ON       *IN63            No roll up
+     C                     LEAVE
+     C                     ENDIF
+     C                     ENDDO
+      *
+      *  Calculate scale of bar
+      *
+     C                     EXSR @@SCAL
+      *
+      *  Calculate and set height of each bar
+      *
+     C                     EXSR @@SETH
+      *
+     C           EXIT      DOUEQYES
+     C           CANCEL    OREQ YES
+     C           QUIT      OREQ YES
+      *
+     C                     EXFMTHRZBAR
+      *
+     C                     SELEC
+     C           @@AID     WHEQ ##F3                       Exit
+     C                     MOVE YES       EXIT
+     C           @@AID     WHEQ ##F12                      Cancel
+     C                     MOVE YES       CANCEL
+     C           @@AID     WHEQ ##F15                      Vertical
+     C                     MOVELDATE1     ##MNTH           Set starting
+     C                     MOVE DATE1     ##YEAR
+     C                     MOVE YES       CANCEL
+     C           @@AID     WHEQ ##RUP                      Roll up
+     C                     EXSR @@BARU
+     C           @@AID     WHEQ ##RDN                      Roll down
+     C                     EXSR @@BARD
+     C                     ENDSL
+      *
+     C                     ENDDO
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Roll bar chart up four entries
+      *
+     C           @@BARU    BEGSR
+      *  Position file
+     C                     MOVELDATE1     ##MNTH           Set starting
+     C                     MOVE DATE1     ##YEAR
+     C           KEYBAR    SETGTSLSSUMM
+      *
+     C                     Z-ADD0         BAM              Clear amounts
+     C                     Z-ADD0         DTE              Clear dates
+     C                     MOVE *OFF      *IN63            Roll up
+     C                     MOVE *OFF      *IN64            Roll down
+      *
+      *  Read next four records from file
+      *
+     C           1         DO   4         IY               Load amounts
+     C           CUSNBR    READESLSSUMM                  90
+     C           *IN90     IFEQ *OFF
+     C                     Z-ADDTOTAMT    BAM,IY    H
+     C                     MOVELMONTH     WRKDTE  4
+     C                     MOVE YEAR      WRKDTE
+     C                     MOVE WRKDTE    DTE,IY
+     C                     ELSE                            Reset file
+     C           SVRRN1    IFGT 3                          More than 1 pag
+     C                     EXSR @@BARD                     Load last 4
+     C                     ENDIF
+     C                     MOVE *ON       *IN63            No roll up
+     C                     LEAVE
+     C                     ENDIF
+     C                     ENDDO
+      *
+      *  Calculate scale of bar
+      *
+     C                     EXSR @@SCAL
+      *
+      *  Calculate and set height of each bar
+      *
+     C           VRTHRZ    CASEQ'V'       @@SETV
+     C           VRTHRZ    CASEQ'H'       @@SETH
+     C                     ENDCS
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Roll bar chart down four entries
+      *
+     C           @@BARD    BEGSR
+      *  Position file
+     C                     Z-ADD99        ##MNTH           Assume EOF
+     C                     Z-ADD99        ##YEAR            position
+     C                     SELEC
+     C           DATE4     WHNE 0
+     C                     MOVELDATE4     ##MNTH           Set starting
+     C                     MOVE DATE4     ##YEAR
+     C                     Z-ADD4         IY               Load point
+     C           DATE3     WHNE 0
+     C                     Z-ADD4         IY               Load point
+     C           DATE2     WHNE 0
+     C                     Z-ADD3         IY               Load point
+     C                     OTHER
+     C                     Z-ADD2         IY               Load point
+     C                     ENDSL
+      *
+     C           KEYBAR    SETLLSLSSUMM
+      *
+     C                     Z-ADD0         BAM              Clear amounts
+     C                     Z-ADD0         DTE              Clear dates
+     C                     MOVE *OFF      *IN63            Roll up
+     C                     MOVE *OFF      *IN64            Roll down
+      *
+      *  Read previous four records from file
+      *    If BOF reached, reset file and load first four entries
+      *
+     C           IY        DOUEQ0                          Load amounts
+     C           CUSNBR    REDPESLSSUMM                  90
+     C           *IN90     IFEQ *OFF
+     C                     Z-ADDTOTAMT    BAM,IY    H
+     C                     MOVELMONTH     WRKDTE  4
+     C                     MOVE YEAR      WRKDTE
+     C                     MOVE WRKDTE    DTE,IY
+     C                     ELSE                            Reset file
+     C                     Z-ADD0         DATE1            Force beginning
+     C                     EXSR @@BARU
+     C                     MOVE *ON       *IN64            No roll down
+     C                     LEAVE
+     C                     ENDIF
+     C                     SUB  1         IY
+     C                     ENDDO
+      *
+      *  Calculate scale of bar
+      *
+     C                     EXSR @@SCAL
+      *
+      *  Calculate and set height of each bar
+      *
+     C           VRTHRZ    CASEQ'V'       @@SETV
+     C           VRTHRZ    CASEQ'H'       @@SETH
+     C                     ENDCS
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Calculate scale for four entries on screen
+      *
+     C           @@SCAL    BEGSR
+      *
+      *  Find highest amount
+      *
+     C                     Z-ADDBAM       AMT
+     C                     SORTAAMT
+     C                     Z-ADDAMT,4     HGHAMT  70
+      *
+      *  Round value to next highest "0" number
+      *      ie.  85->90   758->800
+      *
+     C                     SELEC
+     C           HGHAMT    WHLT 10
+     C                     Z-ADD1         DIVSOR  70
+     C           HGHAMT    WHLT 100
+     C                     Z-ADD10        DIVSOR
+     C           HGHAMT    WHLT 1000
+     C                     Z-ADD100       DIVSOR
+     C           HGHAMT    WHLT 10000
+     C                     Z-ADD1000      DIVSOR
+     C           HGHAMT    WHLT 100000
+     C                     Z-ADD10000     DIVSOR
+     C           HGHAMT    WHLT 1000000
+     C                     Z-ADD100000    DIVSOR
+     C                     OTHER
+     C                     Z-ADD1000000   DIVSOR
+     C                     ENDSL
+      *
+     C           HGHAMT    DIV  DIVSOR    WRKAMT  70       Get first digit
+     C                     ADD  1         WRKAMT           increase by 1
+      *
+      *  Set each quarter point
+     C           WRKAMT    MULT .25       WAM,1     H      Set initial 1/4
+     C           WRKAMT    MULT .50       WAM,2     H      Set initial 1/2
+     C           WRKAMT    MULT .75       WAM,3     H      Set initial 3/4
+     C                     Z-ADDWRKAMT    WAM,4            Set top value
+      *
+      *  Round each quarter point
+     C           WAM       MULT DIVSOR    AMT              Set rounded val
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Calculate and set height of vertical bars
+      *
+     C           @@SETV    BEGSR
+      *
+     C                     MOVEA*BLANKS   VB1
+     C                     MOVEA*BLANKS   VB2
+     C                     MOVEA*BLANKS   VB3
+     C                     MOVEA*BLANKS   VB4
+      *
+      *  For each amount set the height
+      *
+     C           BAM,1     IFGT 0
+     C           BAM,1     DIV  AMT,4     IX      32H
+     C           16        MULT IX        POS     30
+      *
+     C           1         DO   POS       IY      30
+     C                     MOVELHEX21     VB1,IY
+     C                     ENDDO
+      *
+     C                     ENDIF
+      *
+     C           BAM,2     IFGT 0
+     C           BAM,2     DIV  AMT,4     IX        H
+     C           16        MULT IX        POS
+      *
+     C           1         DO   POS       IY
+     C                     MOVELHEX21     VB2,IY
+     C                     ENDDO
+      *
+     C                     ENDIF
+      *
+     C           BAM,3     IFGT 0
+     C           BAM,3     DIV  AMT,4     IX        H
+     C           16        MULT IX        POS
+      *
+     C           1         DO   POS       IY
+     C                     MOVELHEX21     VB3,IY
+     C                     ENDDO
+      *
+     C                     ENDIF
+      *
+     C           BAM,4     IFGT 0
+     C           BAM,4     DIV  AMT,4     IX        H
+     C           16        MULT IX        POS
+      *
+     C           1         DO   POS       IY
+     C                     MOVELHEX21     VB4,IY
+     C                     ENDDO
+      *
+     C                     ENDIF
+      *
+     C                     ENDSR
+     C/EJECT
+      *
+      *  Calculate and set height of horizontal bars
+      *
+     C           @@SETH    BEGSR
+      *
+     C                     MOVE *BLANKS   HB1C1
+     C                     MOVE *BLANKS   HB1C2
+     C                     MOVE *BLANKS   HB2C1
+     C                     MOVE *BLANKS   HB2C2
+     C                     MOVE *BLANKS   HB3C1
+     C                     MOVE *BLANKS   HB3C2
+     C                     MOVE *BLANKS   HB4C1
+     C                     MOVE *BLANKS   HB4C2
+      *
+      *  For each amount set the height
+      *
+     C           BAM,1     IFGT 0
+     C           BAM,1     DIV  AMT,4     IX        H
+     C           70        MULT IX        IY
+     C                     ADD  1         IY
+     C           IY        IFLE 70
+     C           HB1C1     CAT  HEX20:IY  HB1C1     P
+     C           HB1C2     CAT  HEX20:IY  HB1C2     P
+     C                     ENDIF
+      *
+     C                     ELSE                            Turn bar off
+     C                     MOVELHEX20     HB1C1
+     C                     MOVELHEX20     HB1C2
+     C                     ENDIF
+      *
+     C           BAM,2     IFGT 0
+     C           BAM,2     DIV  AMT,4     IX        H
+     C           70        MULT IX        IY
+     C                     ADD  1         IY
+     C           IY        IFLE 70
+     C           HB2C1     CAT  HEX20:IY  HB2C1     P
+     C           HB2C2     CAT  HEX20:IY  HB2C2     P
+     C                     ENDIF
+      *
+     C                     ELSE                            Turn bar off
+     C                     MOVELHEX20     HB2C1
+     C                     MOVELHEX20     HB2C2
+     C                     ENDIF
+      *
+     C           BAM,3     IFGT 0
+     C           BAM,3     DIV  AMT,4     IX        H
+     C           70        MULT IX        IY
+     C                     ADD  1         IY
+     C           IY        IFLE 70
+     C           HB3C1     CAT  HEX20:IY  HB3C1     P
+     C           HB3C2     CAT  HEX20:IY  HB3C2     P
+     C                     ENDIF
+      *
+     C                     ELSE                            Turn bar off
+     C                     MOVELHEX20     HB3C1
+     C                     MOVELHEX20     HB3C2
+     C                     ENDIF
+      *
+     C           BAM,4     IFGT 0
+     C           BAM,4     DIV  AMT,4     IX        H
+     C           70        MULT IX        IY
+     C                     ADD  1         IY
+     C           IY        IFLE 70
+     C           HB4C1     CAT  HEX20:IY  HB4C1     P
+     C           HB4C2     CAT  HEX20:IY  HB4C2     P
+     C                     ENDIF
+      *
+     C                     ELSE                            Turn bar off
+     C                     MOVELHEX20     HB4C1
+     C                     MOVELHEX20     HB4C2
+     C                     ENDIF
+      *
+     C                     ENDSR

@@ -1,0 +1,19 @@
+      *
+      *  NOTE:  Must create data queue prior to creating display file.
+      *         Use the following command:
+      *               CRTDTAQ(TIME001D) MAXLEN(80) +
+      *                 TEXT('Data Queue for Display File Communications')
+      *
+      *         Create display file using DFRWTR(*NO) and DTAQ(TIME001D)
+      *
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+     A                                      INVITE
+      *-------------------------------------------------------------------------
+     A          R FMT1                      KEEP BLINK
+     A                                 10 10'The number of 10 second times:'
+     A            COUNT          5Y 0O 10 41EDTCDE(4)
+     A                                      ALIAS(TIMEOUT_COUNTS)
+     A                                 24  2'F3=Exit' COLOR(BLU)
+     A                                 24 48'F12=Cancel' COLOR(BLU)

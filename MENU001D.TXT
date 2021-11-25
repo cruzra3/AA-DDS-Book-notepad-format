@@ -1,0 +1,48 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+      *-------------------------------------------------------------------------
+     A          R MENUBAR
+     A                                      MNUBAR
+     A                                      MNUBARDSP(&PULINP)
+     A            MNUCHC         2Y 0B  1  2ALIAS(PULL_DOWN_MENU)
+     A                                      MNUBARCHC(1 MAINT '>Maintenance')
+     A                                      MNUBARCHC(2 INQUIRY '>Inquiry')
+     A                                      MNUBARCHC(3 SEARCH '>Search')
+     A                                      MNUBARCHC(4 SPECIAL 'S>pecial')
+     A            PULINP         2S 0H      ALIAS(PULL_DOWN_OPTION)
+      *-------------------------------------------------------------------------
+     A          R MAINT                     PULLDOWN
+     A            PULCHC         2Y 0B  1  1SNGCHCFLD
+     A                                      ALIAS(PULL_MENU_CHIOCE)
+     A                                      CHECK(ER)
+     A                                      CHOICE(1 'Customer Program #1')
+     A                                      CHOICE(2 'Customer Program #2')
+     A                                      CHOICE(3 'Data Entry Example')
+      *-------------------------------------------------------------------------
+     A          R INQUIRY                   PULLDOWN
+     A            PULCHC         2Y 0B  1  1SNGCHCFLD
+     A                                      ALIAS(PULL_MENU_CHIOCE)
+     A                                      CHECK(ER)
+     A                                      CHOICE(1 'Customer Program #1')
+     A                                      CHOICE(2 'Customer Program #2')
+     A                                      CHOICE(3 'Sales Inquiry Program #1')
+     A                                      CHOICE(4 'Sales Inquiry Program #2')
+      *-------------------------------------------------------------------------
+     A          R SEARCH                    PULLDOWN
+     A            PULCHC         2Y 0B  1  1SNGCHCFLD
+     A                                      ALIAS(PULL_MENU_CHIOCE)
+     A                                      CHECK(ER)
+     A                                      CHOICE(1 'Customer Program #3')
+     A                                      CHOICE(2 'Customer Program #4')
+      *-------------------------------------------------------------------------
+     A          R SPECIAL                   PULLDOWN
+     A            PULCHC         2Y 0B  1  1SNGCHCFLD
+     A                                      ALIAS(PULL_MENU_CHIOCE)
+     A                                      CHECK(ER)
+     A                                      CHOICE(1 'Backup Program #1')
+     A                                      CHOICE(2 'Backup Program #2')
+     A                                      CHOICE(3 'Special Effects Example')
+     A                                      CHOICE(4 'Color Test Program #1')
+     A                                      CHOICE(5 'Data Type Test Program')

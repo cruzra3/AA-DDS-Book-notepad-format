@@ -1,0 +1,10 @@
+     A          R HISTFMT
+     A            CUST#          7P 0       ALIAS(CUSTOMER_NUMBER)
+     A            SALEO#         7P 0       ALIAS(ORDER_NUMBER)
+     A            DATE           6S 0       ALIAS(SHIPMENT_DATE)
+     A            INV#           5P 0       ALIAS(INVOICE_NUMBER)
+     A            PART#         20A         ALIAS(PART_NUMBER)
+     A            QTY            7P 0       ALIAS(QUANTITY_SOLD)
+     A            PRICE          7P 2       ALIAS(UNIT_PRICE)
+     A            TAX            7P 2       ALIAS(SALES_TAX)
+     A            TOTAL$         7P 2       ALIAS(INVOICE_TOTAL)

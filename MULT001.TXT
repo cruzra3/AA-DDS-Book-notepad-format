@@ -1,0 +1,180 @@
+      *------------------------------------------------------------------*
+      * MULT001  - Multiple Device Graphics Example                      *
+      *------------------------------------------------------------------*
+     FMULT001DCF  E                    WORKSTN      KINFDS DSPINF
+     F                                              KNUM       11
+     F                                              KID    DEVICE
+     E                    DEV        10 10               Device Names
+     E                    STS        10 20               Status
+     E                    ACT        10  1               Active Flag
+     IDSPINF      DS
+     I                                      197 206 ##DEV
+     I                                      369 369 ##AID
+      *
+     I            DS
+     I                                        1 100 DEV
+     I                                        1  10 DEV01
+     I                                       11  20 DEV02
+     I                                       21  30 DEV03
+     I                                       31  40 DEV04
+     I                                       41  50 DEV05
+     I                                       51  60 DEV06
+     I                                       61  70 DEV07
+     I                                       71  80 DEV08
+     I                                       81  90 DEV09
+     I                                       91 100 DEV10
+      *
+     I            DS
+     I                                        1 200 STS
+     I                                        1  20 STAT01
+     I                                       21  40 STAT02
+     I                                       41  60 STAT03
+     I                                       61  80 STAT04
+     I                                       81 100 STAT05
+     I                                      101 120 STAT06
+     I                                      121 140 STAT07
+     I                                      141 160 STAT08
+     I                                      161 180 STAT09
+     I                                      181 200 STAT10
+      *
+     I              'Active Screen'       C         ACTIVE
+     I              'Not Available'       C         NOTAVL
+     I              'Inactive Screen'     C         INACT
+      *
+     I              X'33'                 C         ##F3
+     I              X'3C'                 C         ##F12
+     I              'Y'                   C         YES
+     I              'N'                   C         NO
+      *
+      *   Stay in program until Exit is requested
+      *
+     C           EXIT      DOUEQYES
+      *
+     C                     MOVE RQSDEV    DEVICE           Set name
+     C                     EXFMTFMT01
+     C                     POST MULT001D                   Get INFDS info
+     C                     SELEC
+     C           ##AID     WHEQ ##F3
+     C                     MOVE YES       EXIT
+     C           ##AID     WHEQ ##F12
+     C                     MOVE YES       EXIT
+     C                     OTHER
+     C                     EXSR @@PROC                     Process screens
+     C                     MOVEA*BLANKS   DEV
+     C                     MOVEA*BLANKS   STS
+     C                     MOVEA*BLANKS   ACT
+     C                     ENDSL
+      *
+     C                     ENDDO
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      /EJECT
+      *
+      *  Program Initialization
+      *
+     C           *INZSR    BEGSR
+      *
+      *  Initialize Program variables
+      *
+     C                     MOVE NO        EXIT    1        Exit flag
+     C                     MOVE NO        QUIT    1        Quit flag
+     C                     MOVE ##DEV     RQSDEV 10        Requester
+     C                     Z-ADD0         IX      30
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Process Device Requests
+      *
+     C           @@PROC    BEGSR
+      *
+      *  Allocate each device
+      *
+     C           1         DO   10        IX
+      *
+     C                     SELEC
+     C           DEV,IX    WHEQ RQSDEV                     Same device
+     C                     MOVELNOTAVL    STS,IX    P
+      *
+     C           DEV,IX    WHNE *BLANKS                    Entered name
+     C                     MOVE DEV,IX    DEVICE           Set name
+     C           DEVICE    ACQ  MULT001D               90
+     C           *IN90     IFEQ *ON
+     C                     MOVELNOTAVL    STS,IX    P      Not available
+      *
+     C                     ELSE                            Available
+     C                     MOVE YES       ACT,IX
+     C                     MOVELACTIVE    STS,IX    P
+     C                     ENDIF                           End *IN90=ON
+      *
+     C                     ENDSL
+      *
+     C                     ENDDO                           End 1-10 loop
+      *
+      *  Show Initial screen statuses
+      *
+     C                     MOVE RQSDEV    DEVICE           Reset screen
+     C                     WRITEFMT01                       status
+      *
+      *  For each acquired device, put up screen image
+      *      plus graphics if available
+      *
+     C           1         DO   10        IX
+     C           ACT,IX    IFEQ YES                        Available
+     C                     MOVE DEV,IX    DEVICE
+     C                     WRITEFMT02                      Put up screen
+     C                     ENDIF
+      *
+     C                     ENDDO                           End 1-10 loop
+      *
+      *  Stay on screens until all devices exit.....
+      *
+     C           QUIT      DOUEQYES
+     C                     READ MULT001D                 90 Wait for input
+     C                     POST MULT001D
+      *
+     C                     SELEC
+     C           DEVICE    WHEQ RQSDEV                     Requester
+     C           ##AID     IFEQ ##F3                       Exit  or
+     C           ##AID     OREQ ##F12                      Cancel
+     C           1         DO   10        IX
+     C           ACT,IX    IFEQ YES
+     C                     MOVE DEV,IX    DEVICE           Set name
+     C           DEVICE    REL  MULT001D
+     C                     ENDIF
+     C                     ENDDO
+     C                     MOVE YES       QUIT
+     C                     MOVE YES       EXIT
+      *
+     C                     ELSE                            ENTER key
+     C                     WRITEFMT01                      redisplay scr
+     C                     ENDIF
+      *
+     C           ##AID     WHEQ ##F3                       Exit or
+     C           ##AID     OREQ ##F12                      Cancel
+      *   Release device
+     C           DEVICE    REL  MULT001D                   Release device
+     C                     Z-ADD1         IX
+     C           DEVICE    LOKUPDEV,IX                   40 Find entry
+     C                     MOVE *BLANKS   ACT,IX           Clear active
+     C                     MOVELINACT     STS,IX    P      Set status
+      *   Reset screen status
+     C                     MOVE RQSDEV    DEVICE           Reset screen
+     C                     WRITEFMT01                       status
+      *   Any devices still acquired
+     C                     MOVE YES       QUIT
+     C           1         DO   10        IX
+     C           ACT,IX    IFEQ YES                        Still acquired
+     C                     MOVE NO        QUIT
+     C                     LEAVE
+     C                     ENDIF
+     C                     ENDDO
+      *
+     C                     OTHER                           Reput dev scr
+     C                     WRITEFMT02                      Put up screen
+     C                     ENDSL
+      *
+     C                     ENDDO                           End QUIT loop
+      *
+     C                     ENDSR

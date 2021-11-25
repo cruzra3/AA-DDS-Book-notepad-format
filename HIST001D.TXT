@@ -1,0 +1,68 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(ORDERHST)
+     A                                      PRINT
+     A                                      CA03(03 'Exit program')
+      *-------------------------------------------------------------------------
+     A          R FMT01
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 11TIME
+     A                                  1 28'Customer Sales Inquiry'
+     A                                      DSPATR(HI)
+     A                                  8 21'Customer Number:'
+     A            CUST#     R     Y  B  8 39EDTCDE(4)
+     A  70                                  ERRMSG('No sales for customer code'-
+     A                                       70)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R FMT02
+     A                                      CA12(12 'Cancel Request')
+     A                                      ROLLUP(25)
+     A                                      ROLLDOWN(26)
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                  1 11TIME
+     A                                  1 28'Customer Sales Inquiry'
+     A                                      DSPATR(HI)
+     A            HIDDEN         1A  O  1 79DSPATR(ND)
+     A  69                                  ERRMSGID(CPF5203 *LIBL/QCPFMSG 69)
+     A                                  5  2'Customer Number:'
+     A                                      DSPATR(HI)
+     A            CUST#     R        O  5 20EDTCDE(4)
+     A                                  7  2'Invoice Date:'
+     A                                      DSPATR(HI)
+     A            DSPDAT    R        O  7 19REFFLD(DATE)
+     A                                      EDTCDE(Y)
+     A                                  8  2'Invoice Number:'
+     A                                      DSPATR(HI)
+     A            INV#      R        O  8 19EDTCDE(4)
+     A                                 10  2'Sales Order #:'
+     A                                      DSPATR(HI)
+     A            SALEO#    R        O 10 19EDTCDE(4)
+     A                                 11  2'Part Number:'
+     A                                      DSPATR(HI)
+     A            PART#     R        O 11 19
+     A                                 13  2'Quantity:'
+     A                                      DSPATR(HI)
+     A            QTY       R        O 13 12EDTCDE(4)
+     A                                 13 22'Price:'
+     A                                      DSPATR(HI)
+     A            PRICE     R        O 13 29EDTCDE(J $)
+     A                                 13 44'Ext Amt:'
+     A                                      DSPATR(HI)
+     A            EXTAMT         7Y 2O 13 53EDTCDE(J $)
+     A                                 14 44'Tax:'
+     A                                      DSPATR(HI)
+     A            TAX       R        O 14 53EDTCDE(J $)
+     A                                 16 38'Invoice Total:'
+     A                                      DSPATR(HI)
+     A            TOTAL$    R        O 16 53EDTCDE(J $)
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 13'F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 23 30'ROLLUP=Next Record'
+     A                                      COLOR(BLU)
+     A                                 23 54'ROLLDOWN=Previous Record'
+     A                                      COLOR(BLU)

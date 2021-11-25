@@ -1,0 +1,117 @@
+      *------------------------------------------------------------------*
+      * DTAQB01  - Data Queue Example Background Program                 *
+      *------------------------------------------------------------------*
+     IINDATA      DS                             80
+     I                                        1  10 RQS
+     IOUTDTA      DS                             80
+     I                                        1  10 JOBID
+     I                                       11  20 STATUS
+     I              'ON HOLD'             C         HOLD
+     I              'RELEASED'            C         RLS
+     I              'ACTIVE'              C         ACTIVE
+     I              'WAITING'             C         WAIT
+     I              'STARTING'            C         START
+     I              'INACTIVE'            C         INACT
+      *
+      *   Stay in program until "END" request is received
+      *
+     C           RQS       DOUEQ'END'
+      *
+     C                     CALL 'QRCVDTAQ'
+     C                     PARM           INQUE
+     C                     PARM           QUELIB
+     C                     PARM           INLEN
+     C                     PARM           INDATA
+     C                     PARM           WAITTM
+     C                     PARM           ORDER
+     C                     PARM           KEYLEN
+     C                     PARM           KEYVAL
+     C                     PARM           SNDLEN
+     C                     PARM           SNDDTA
+      *
+     C                     SELEC
+     C           INLEN     WHEQ 0                          No data recevd
+     C           STATUS    IFNE HOLD                       Not on hold
+     C                     SELEC
+     C           STATUS    WHEQ ACTIVE                     Active
+     C                     MOVELWAIT      STATUS    P
+     C                     OTHER
+     C                     MOVELACTIVE    STATUS    P
+     C                     ENDSL
+     C                     EXSR @@SEND
+     C                     ENDIF
+      *
+     C           RQS       WHEQ HOLD                       Hold job
+     C                     MOVELHOLD      STATUS    P
+     C                     EXSR @@SEND
+      *
+     C           RQS       WHEQ RLS
+     C                     MOVELRLS       STATUS    P
+     C                     EXSR @@SEND
+     C                     ENDSL
+      *
+     C                     ENDDO
+      *
+      *  Send inactive status
+      *
+     C                     MOVELINACT     STATUS    P
+     C                     EXSR @@SEND
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN
+      /EJECT
+      *
+      *  Program Initialization
+      *
+     C           *INZSR    BEGSR
+      *
+     C           *ENTRY    PLIST
+     C                     PARM           BATCH#  6        Batch # of Job
+      *
+      *  Initialize Program variables
+      *
+     C                     MOVEL'DTAQB'   INQUE  10 P      Input queue
+     C                     MOVEL'DTAQI'   OUTQUE 10 P      Output queue
+     C                     MOVEL'*LIBL'   QUELIB 10 P      Queue library
+     C                     Z-ADD0         INLEN   50       Length of data
+     C                     Z-ADD80        DTALEN  50       Length of data
+     C                     MOVE 'EQ'      ORDER   2        Key test
+     C                     Z-ADD10        KEYLEN  30       Key length
+     C                     MOVELBATCH#    KEYVAL 10        Key value
+     C                     Z-ADD0         SNDLEN  30       Sender ID lngth
+     C                     MOVE *BLANKS   SNDDTA 10        Sender ID
+      *
+     C                     MOVELBATCH#    JOBID            Job identifier
+      *
+     C                     SELEC
+     C           BATCH#    WHEQ 'BATCH1'
+     C                     Z-ADD10        WAITTM  50       Wait time
+     C           BATCH#    WHEQ 'BATCH2'
+     C                     Z-ADD20        WAITTM           Wait time
+     C           BATCH#    WHEQ 'BATCH3'
+     C                     Z-ADD25        WAITTM           Wait time
+     C           BATCH#    WHEQ 'BATCH4'
+     C                     Z-ADD15        WAITTM           Wait time
+     C                     ENDSL
+      *
+      *  Send initial job status
+      *
+     C                     MOVELSTART     STATUS    P
+     C                     EXSR @@SEND
+      *
+     C                     ENDSR
+      /EJECT
+      *
+      *  Send status to monitoring program
+      *
+     C           @@SEND    BEGSR
+      *
+      *  Send data
+      *
+     C                     CALL 'QSNDDTAQ'
+     C                     PARM           OUTQUE
+     C                     PARM           QUELIB
+     C                     PARM           DTALEN
+     C                     PARM           OUTDTA
+      *
+     C                     ENDSR

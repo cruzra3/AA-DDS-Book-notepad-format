@@ -1,0 +1,31 @@
+      *------------------------------------------------------------------*
+      * TCOLOR   - LIST OF ALL COLORS AND ATTRIBUTES                     *
+      *------------------------------------------------------------------*
+      *                    INDICATOR SUMMARY                             *
+      *                                                                  *
+      *    03  -  End of Program.                                        *
+      *    10  -  Toggle column seperators                               *
+      *                                                                  *
+      *------------------------------------------------------------------*
+     FTCOLORD CF  E                    WORKSTN
+     C/EJECT
+      *
+      *  Mainline
+      *
+     C           *IN03     DOUEQ*ON                        Stay until exit
+      *
+     C                     WRITECOLOR1                     Show colors
+     C                     EXFMTCOLOR2
+      *
+     C           *IN10     IFEQ *ON                        Toggle CS
+     C           *IN20     IFEQ *ON                         SWITCH
+     C                     MOVE *OFF      *IN20
+     C                     ELSE
+     C                     MOVE *ON       *IN20
+     C                     ENDIF
+     C                     ENDIF
+      *
+     C                     ENDDO
+      *
+     C                     MOVE *ON       *INLR            SETON LR
+     C                     RETRN                            AND RETURN

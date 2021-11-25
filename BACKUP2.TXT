@@ -1,0 +1,111 @@
+     PGM
+
+        DCL  &again  *LGL  1
+        DCLF  backup2d
+
+        /* Ask for libraries to backup */
+     LOOP:
+        SNDRCVF  RCDFMT( select )
+
+        IF ( &in03 *OR &in12 )  GOTO endpgm         /* exit request  */
+
+        /*  Validate library names  */
+        CHGVAR  &again  '0'
+
+        IF ( &lib1 *NE ' ' ) DO
+           CHKOBJ  &lib1  *LIB
+           MONMSG  cpf0000  EXEC( DO )
+              CHGVAR  &in71    '1'
+              CHGVAR  &msgdta  &lib1
+              CHGVAR  &again   '1'
+           ENDDO
+        ENDDO
+
+        IF ( &lib2 *NE ' ' ) DO
+            CHKOBJ  &lib2  *LIB
+            MONMSG  cpf0000  EXEC( DO )
+               CHGVAR  &in72    '1'
+               CHGVAR  &msgdta  &lib2
+               CHGVAR  &again   '1'
+            ENDDO
+        ENDDO
+
+        IF ( &lib3 *NE ' ' ) DO
+           CHKOBJ  &lib3  *LIB
+           MONMSG  cpf0000  EXEC( DO )
+              CHGVAR  &in73    '1'
+              CHGVAR  &msgdta  &lib3
+              CHGVAR  &again   '1'
+           ENDDO
+        ENDDO
+        IF ( &lib4 *NE ' ' ) DO
+           CHKOBJ  &lib4  *LIB
+           MONMSG  cpf0000  EXEC( DO )
+              CHGVAR  &in74    '1'
+              CHGVAR  &msgdta  &lib4
+              CHGVAR  &again   '1'
+           ENDDO
+        ENDDO
+
+        IF ( &lib5 *NE ' ' ) DO
+           CHKOBJ  &lib5  *LIB
+           MONMSG  cpf0000  EXEC( DO )
+              CHGVAR  &in75    '1'
+              CHGVAR  &msgdta  &lib5
+              CHGVAR  &again   '1'
+           ENDDO
+        ENDDO
+
+        IF ( &again )  GOTO loop          /* Any errors, show them  */
+
+        /* Confirm backup request */
+        SNDRCVF  RCDFMT( confirm )
+        IF ( &yes *EQ 'N' )  GOTO loop
+
+        /* Save each library individually onto tape */
+        IF ( &lib1 *NE ' ' ) DO
+           CHGVAR  &in41  '1'
+           SNDF    RCDFMT( clear )
+           SNDF    RCDFMT( inprog )
+           SAVLIB  &lib1  qtape1  ENDOPT( *LEAVE )
+           CHGVAR  &in41  '0'
+        ENDDO
+
+        IF ( &lib2 *NE ' ' ) DO
+           CHGVAR  &in42  '1'
+           SNDF    RCDFMT( clear )
+           SNDF    RCDFMT( inprog )
+           SAVLIB  &lib2  qtape1  ENDOPT( *LEAVE )
+           CHGVAR  &in42  '0'
+        ENDDO
+
+        IF ( &lib3 *NE ' ' ) DO
+           CHGVAR  &in43  '1'
+           SNDF    RCDFMT( clear )
+           SNDF    RCDFMT( inprog )
+           SAVLIB  &lib3  qtape1  ENDOPT( *LEAVE )
+           CHGVAR  &in43  '0'
+        ENDDO
+
+        IF ( &lib4 *NE ' ' ) DO
+           CHGVAR  &in44  '1'
+           SNDF    RCDFMT( clear )
+           SNDF    RCDFMT( inprog )
+           SAVLIB  &lib4  qtape1  ENDOPT( *LEAVE )
+           CHGVAR  &in44  '0'
+        ENDDO
+
+        IF ( &lib5 *NE ' ' ) DO
+           CHGVAR  &in45  '1'
+           SNDF    RCDFMT( clear )
+           SNDF    RCDFMT( inprog )
+           SAVLIB  &lib5  qtape1  ENDOPT( *LEAVE )
+           CHGVAR  &in45  '0'
+        ENDDO
+
+        CHKTAP  qtape1  ENDOPT( *UNLOAD )
+        SNDF  RCDFMT( clear )
+        GOTO  loop
+
+     ENDPGM:
+     ENDPGM

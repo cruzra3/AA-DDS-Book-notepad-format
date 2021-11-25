@@ -1,0 +1,72 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      REF(TIMECARD)
+     A                                      PRINT
+     A                                      CA03
+     A                                      CA12
+      *-------------------------------------------------------------------------
+     A          R SELECT
+     A                                      BLINK
+     A                                      KEEP
+     A                                  1 31'Timecard Data Entry'
+     A                                      DSPATR(HI)
+     A                                  6 19'Employee Number:'
+     A            EMP#      R     Y  I  6 37ALIAS(EMPLOYEE_NUMBER)
+     A                                  8 19'Date:'
+     A            DATE      R     Y  B  8 37EDTCDE(Y)
+     A                                      EDTMSK('  &  &  ')
+     A                                 10 19'Work Shift:'
+     A            SHIFT     R        B 10 37
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)
+      *-------------------------------------------------------------------------
+     A          R SFL01                     SFL
+     A  50                                  SFLNXTCHG
+     A            STRTIM    R     Y  B  6  6EDTWRD('0 :  ')
+     A                                      EDTMSK('  &  ')
+     A  51                                  DSPATR(RI)
+     A                                      ALIAS(STARTING_TIME)
+     A            ENDTIM    R     Y  B  6 14EDTWRD('0 :  ')
+     A                                      EDTMSK('  &  ')
+     A  52                                  DSPATR(RI)
+     A                                      ALIAS(ENDING_TIME)
+     A            PROJ#     R     Y  B  6 22ALIAS(PROJECT_NUMBER)
+     A                                      EDTCDE(4)
+      *-------------------------------------------------------------------------
+     A          R CTL01                     SFLCTL(SFL01)
+     A N62                                  ROLLUP
+     A                                      OVERLAY
+     A  61                                  SFLDSP
+     A  60                                  SFLDSPCTL
+     A N60                                  SFLINZ
+     A  62                                  SFLEND(*MORE)
+     A                                      SFLSIZ(0064)
+     A                                      SFLPAG(0032)
+     A                                      SFLLIN(0010)
+     A  70                                  SFLMSG('Invalid starting time' 70)
+     A  71                                  SFLMSG('Invalid ending time' 71)
+     A            DSPREC         4S 0H      SFLRCDNBR
+     A                                  1 31'Timecard Data Entry'
+     A                                      DSPATR(HI)
+     A                                  3  2'Emp#:'
+     A            EMP#      R        O  3  8ALIAS(EMPLOYEE_NUMBER)
+     A                                  3 13'Date:'
+     A            DATE      R        O  3 19REFFLD(DATE *SRC)
+     A                                      EDTCDE(Y)
+     A                                  3 29'Shift:'
+     A            SHIFT     R        O  3 36REFFLD(SHIFT *SRC)
+     A                                  4  6'----Time-----'
+     A                                  5  6'Start'
+     A                                  5 14'End'
+     A                                  5 22'Proj#'
+     A                                  4 37'----Time-----'
+     A                                  5 37'Start'
+     A                                  5 45'End'
+     A                                  5 53'Proj#'
+      *-------------------------------------------------------------------------
+     A          R BTM01
+     A                                 23  2'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 45'F12=Cancel'
+     A                                      COLOR(BLU)

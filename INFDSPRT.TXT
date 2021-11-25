@@ -1,0 +1,123 @@
+     I*---------------------------------------------------------------------
+     I* Fields beginning with @$ are available only after a POST operation.
+     I* All other fields are available at all times.
+     I*---------------------------------------------------------------------
+     I* File name, internal name (F-spec)
+     I                                     *FILE    @@FILI
+     I* End of file indicator (1=EOF)
+     I                                       10  10 @@EOF
+     I* Status code
+     I*    00000 = No exception or error
+     I*    01211 = I/O attempt on closed file
+     I*    01215 = OPEN attempted on open file
+     I*    01216 = Error during implicit OPEN
+     I*    01217 = Error during explicit OPEN
+     I*    01251 = Permanent I/O error
+     I*    01255 = Session or device error
+     I*    01282 = ENDJOB OPTION(*CNTRLD) in progress
+     I*    01285 = Attempt to acquire acquired device
+     I*    01299 = Other I/O error detected
+     I                                     *STATUS  @@STS
+     I* Operation code
+     I*    First five characters have opcode executed last.
+     I*    Remaining character can be:
+     I*       'F' = Operation performed on file name
+     I*       'R' = Operation performed on record name
+     I*       'I' = Operation performed implicitly
+     I                                     *OPCODE  @@OPER
+     I* Name of routine with exception.  Can have the following values:
+     I*    '*INIT   ' = Program initiation
+     I*    '*DETL   ' = Detail lines
+     I*    '*TOTC   ' = Total calculations
+     I*    '*DETC   ' = Detail calculations
+     I*    '*OFL    ' = Overflow lines
+     I*    '*TERM   ' = Program termination
+     I*    First 8 characters of name of called program
+     I*    Name of a subroutine
+     I*    Name of EXCPT
+     I                                     *ROUTINE @@ROUT
+     I* Source statement number
+     I                                       30  37 @@SRC#
+     I* User-specified reason for error on SPECIAL file
+     I                                       38  420@@URES
+     I* Record identification (indicator or name)
+     I                                     *RECORD  @@RCDI
+     I* Message identification
+     I                                       46  52 @@MSGI
+     I* MI/ODT number
+     I                                       53  56 @@MI#
+     I* National language output capability
+     I                                     *OUT     @$NLO
+     I* Perferred national language
+     I                                     *MODE    @$NLP
+     I* Open data path type
+     I*    'DS' = Non-spooled
+     I*    'SP' = Spooled
+     I                                       81  82 @@ODP
+     I* Name of the file
+     I                                       83  92 @@FILE
+     I* Name of the library
+     I                                       93 102 @@LIB
+     I* Name of the spooled file
+     I                                      103 112 @@SPF
+     I* Name of spooled file library
+     I                                      113 122 @@SPFL
+     I* Spooled file number
+     I                                    B 123 1240@@SPFN
+     I* Record length
+     I                                    B 125 1260@@RECL
+     I* File type
+     I                                    B 147 1480@@FILT
+     I* Number of lines per page
+     I                                    B 152 1530@@ROWS
+     I* Number of columns across the page
+     I                                    B 154 1550@@COLS
+     I* Overflow line number
+     I                                    B 188 1890@@OVLN
+     I* Requester device name
+     I                                      197 206 @@RQSD
+     I* File open count
+     I                                    B 207 2080@@OPN#
+     I* Miscellaneous flags
+     I*    Bit 5:  ON if INDARA keyword used in DDS
+     I*    Bit 6:  ON if program supplies buffers
+     I                                      213 213 @@FLG1
+     I* Open identifier
+     I                                      214 215 @@OPNI
+     I* Maximum record format length
+     I                                    B 216 2170@@MXRL
+     I* Write operation count
+     I                                    B 243 2460@@WRT#
+     I* Other operation count
+     I                                    B 255 2580@@OOP#
+     I* Current operation
+     I*    x'05' = Write
+     I*    x'09' = FEOD
+     I                                      260 260 @@COPR
+     I* Device class
+     I*    x'02' = 5256
+     I*    x'08' = Spooled
+     I*    x'0C' = 5224/5225
+     I*    x'0F' = 5219
+     I*    x'10' = 5583
+     I*    x'11' = 5553
+     I*    x'14' = 3470
+     I*    x'15' = Graphic-capable
+     I*    x'21' = 4234
+     I*    x'22' = 3812
+     I*    x'23' = 4214
+     I*    x'24' = 4224
+     I*    x'25' = 4245
+     I*    x'29' = 5262
+     I*    x'30' = 3812
+     I*    x'31' = 4234
+     I*    x'32' = IPDS, unknown model
+     I*    x'55' = 6252
+     I*    x'57' = 4230
+     I                                      272 272 @@DEVC
+     I* Device name
+     I                                      273 282 @@DEV
+     I* Current line number
+     I                                    B 367 3680@@LIN#
+     I* Current page number
+     I                                    B 369 3700@@PAG#
